@@ -34,9 +34,10 @@ public class AccommodationApplication extends Application {
         StackPane root = new StackPane();
         root.getChildren().add(btn);
         
-        Scene scene = new Scene(root, 300, 250);
-        
-        primaryStage.setTitle("Hello World!");
+        //Set scene dimensions and title
+        Scene scene = new Scene(root, 800, 750);        
+        primaryStage.setTitle("UWE Bristol - Accommodation System");
+        //Set scene to stage and show
         primaryStage.setScene(scene);
         primaryStage.show();
     }
