@@ -28,4 +28,31 @@ public class HallManager {
         this.permissionLevel = permissionLevel;
     }
     
+    /* -Class getters- */    
+    public String getManagerName() {
+        return managerName;
+    }
+    
+    public int getManagerID() {
+        return managerID;
+    }
+    
+    public String getLoginName() {
+        return loginName;
+    }
+    
+    public String getLoginPassword() {
+        return loginPassword;
+    }
+    
+    public byte getPermissionLevel() {
+        return permissionLevel;
+    }
+    
+    /* -Class Setters- */
+    
+    //Incase Hall Manager wants to change password in the future
+    public void setLoginPassword(String newPassword) {
+        this.loginPassword = newPassword;
+    }
 }

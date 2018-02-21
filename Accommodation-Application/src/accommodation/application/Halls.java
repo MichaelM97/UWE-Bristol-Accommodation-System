@@ -16,7 +16,7 @@ public class Halls {
     //Declares class attributes
     private String hallName;
     private int hallID;
-    private String address;
+    private String hallAddress;
     private String phoneNumber;
     private List<Room> rooms;
     
@@ -25,8 +25,29 @@ public class Halls {
             String phoneNumber, List<Room> rooms) {
         this.hallName = hallName;
         this.hallID = hallID;
-        this.address = address;
+        this.hallAddress = address;
         this.phoneNumber = phoneNumber;
         this.rooms = rooms;
+    }
+    
+    /* -Class getters- */    
+    public String getHallName() {
+        return hallName;
+    }
+    
+    public int getHallID() {
+        return hallID;
+    }
+    
+    public String getHallAddress() {
+        return hallAddress;
+    }
+    
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+    
+    public List<Room> getRooms() {
+        return rooms;
     }
 }

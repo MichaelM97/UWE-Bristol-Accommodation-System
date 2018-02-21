@@ -27,4 +27,31 @@ public class Room {
         this.hallID = hallID;
         this.cleanStatus = cleanStatus;
     }
+    
+    /* -Class getters- */    
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+    
+    public double getMonthlyRent() {
+        return monthlyRent;
+    }
+    
+    public Halls getHallID() {
+        return hallID;
+    }
+    
+    public byte cleanStatus() {
+        return cleanStatus;
+    }
+    
+    /* -Class Setters- */
+    
+    public void setMonthlyRent(double monthlyRent) {
+        this.monthlyRent = monthlyRent;
+    }
+    
+    public void setCleanStatus(byte newCleanStatus){
+        this.cleanStatus = newCleanStatus;
+    }
 }

@@ -21,4 +21,17 @@ public class Student {
         this.studentName = studentName;
         this.studentID = studentID;
     }
+    
+    /* -Class getters- */    
+    public String getStudentName() {
+        return studentName;
+    }
+    
+    public int getStudentID() {
+        return studentID;
+    }
+    
+    public Lease getLeaseNumber() {
+        return leaseNumber;
+    }    
 }

@@ -27,4 +27,35 @@ public class Lease {
         this.roomNumber = roomNumber;
         this.studentID = studentID;
     }
+    
+    /* -Class getters- */    
+    public int getLeaseNumber() {
+        return leaseNumber;
+    }
+    
+    public int getLeaseDuration() {
+        return leaseDuration;
+    }
+    
+    public Halls getHallID() {
+        return hallID;
+    }
+    
+    public Room getRoomNumber() {
+        return roomNumber;
+    }
+    
+    public Student getStudentID() {
+        return studentID;
+    }
+    
+    /* -Class Setters- */
+    
+    public void setLeaseDuration(int leaseDuration) {
+        this.leaseDuration = leaseDuration;
+    }
+    
+    public void setRoomNumber(Room roomNumber){
+        this.roomNumber = roomNumber;
+    }
 }

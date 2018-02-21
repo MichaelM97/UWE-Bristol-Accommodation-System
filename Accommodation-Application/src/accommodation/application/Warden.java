@@ -27,4 +27,32 @@ public class Warden {
         this.loginPassword = loginPassword;
         this.permissionLevel = permissionLevel;
     }
+    
+    /* -Class getters- */    
+    public String getWardenName() {
+        return wardenName;
+    }
+    
+    public int getWardenID() {
+        return wardenID;
+    }
+    
+    public String getLoginName() {
+        return loginName;
+    }
+    
+    public String getLoginPassword() {
+        return loginPassword;
+    }
+    
+    public byte getPermissionLevel() {
+        return permissionLevel;
+    }
+    
+    /* -Class Setters- */
+    
+    //Incase Warden wants to change password in the future
+    public void setLoginPassword(String newPassword) {
+        this.loginPassword = newPassword;
+    }
 }
