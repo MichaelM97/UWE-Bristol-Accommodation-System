@@ -21,9 +21,9 @@ public class AccommodationApplication extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        Button loginBtn = new Button();
+        loginBtn.setText("Login");
+        loginBtn.setOnAction(new EventHandler<ActionEvent>() {
             
             @Override
             public void handle(ActionEvent event) {
@@ -32,10 +32,10 @@ public class AccommodationApplication extends Application {
         });
         
         StackPane root = new StackPane();
-        root.getChildren().add(btn);
+        root.getChildren().add(loginBtn);
         
         //Set scene dimensions and title
-        Scene scene = new Scene(root, 800, 750);        
+        Scene scene = new Scene(root, 800, 600);        
         primaryStage.setTitle("UWE Bristol - Accommodation System");
         //Set scene to stage and show
         primaryStage.setScene(scene);
