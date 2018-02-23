@@ -8,12 +8,20 @@ package accommodation.application;
 import java.awt.Image;
 import java.io.FileInputStream;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -70,12 +78,61 @@ public class AccommodationApplication extends Application {
                 primaryStage.close();
                 Stage managerStage = new Stage();
                 
+                //Table label
+                final Label label = new Label("Room/lease information:");
+                label.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+                                
+                
+                Halls hall = new Halls();
+                ObservableList<Halls> hallData =
+                        FXCollections.observableArrayList();
+                
+                //Create table headers
+                TableView table = new TableView();
+                table.setEditable(false);
+                TableColumn hallNameCol = new TableColumn("Hall Name");
+                hallNameCol.setCellValueFactory(
+                    new PropertyValueFactory<Halls, String>("hallName"));
+                TableColumn roomNumCol = new TableColumn("Room Number");
+                TableColumn occupancyCol = new TableColumn("Occupancy Status");
+                TableColumn leaseNumCol = new TableColumn("Lease Number");
+                TableColumn studentNameCol = new TableColumn("Student Name");
+                TableColumn cleaningCol = new TableColumn("Cleaning Status");
+                table.setItems(hallData);
+                table.getColumns().addAll(hallNameCol, roomNumCol,
+                        occupancyCol, leaseNumCol, studentNameCol, cleaningCol);                
+                
+                //Form table
+                final VBox tableVbox = new VBox();
+                tableVbox.setSpacing(5);
+                tableVbox.getChildren().addAll(label, table);
+                tableVbox.setLayoutX(20);
+                tableVbox.setLayoutY(20);                
+                
+                //Warden page Back button
+                Button backBtn = new Button();
+                backBtn.setText("Back");
+                backBtn.setPrefSize(100, 30);
+                backBtn.setStyle("-fx-font-size: 1em; ");
+                backBtn.setLayoutX(20);
+                backBtn.setLayoutY(460);                
+                
+                //Back button handling
+                backBtn.setOnAction(new EventHandler<ActionEvent>() {            
+                    @Override
+                    public void handle(ActionEvent event) {
+                        managerStage.close();
+                        primaryStage.show();
+                    }
+                });    
                 
                 //Create pane and add objects depending on scene
                 Pane root = new Pane();
+                root.getChildren().add(backBtn);
+                root.getChildren().add(tableVbox);
                 
                 //Set scene dimensions and title
-                Scene scene = new Scene(root, 600, 400);        
+                Scene scene = new Scene(root, 600, 500);        
                 managerStage.setTitle("Manager View - Accommodation System");
 
                 //Set scene to stage and show

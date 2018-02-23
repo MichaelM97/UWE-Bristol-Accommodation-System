@@ -19,6 +19,10 @@ public class Halls {
     private String hallAddress;
     private String phoneNumber;
     
+    Halls(){
+        
+    }
+    
     //Class Constructor
     public Halls(String hallName, int hallID, String address,
             String phoneNumber) {

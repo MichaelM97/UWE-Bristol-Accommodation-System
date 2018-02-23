@@ -11,6 +11,8 @@ import java.io.FileReader;
 import javafx.application.Preloader;
 import javafx.application.Preloader.ProgressNotification;
 import javafx.application.Preloader.StateChangeNotification;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
@@ -40,14 +42,14 @@ public class DataPreloader extends Preloader {
         stage.show();
         
         //Get data from csv files and load into objects
-        String hallsFile = "/resources/data/halls.csv";
-        String roomsFile = "/resources/data/rooms.csv";
-        String studentsFile = "/resources/data/students.csv";
-        String leasesFile = "/resources/data/leases.csv";
+        String hallsFile = "./resources/data/halls.csv";
+        String roomsFile = "./resources/data/rooms.csv";
+        String studentsFile = "./resources/data/students.csv";
+        String leasesFile = "./resources/data/leases.csv";
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ",";
-
+        
         //Get HALLS data
         try {
             br = new BufferedReader(new FileReader(hallsFile));
