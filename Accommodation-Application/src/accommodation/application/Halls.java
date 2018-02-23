@@ -18,16 +18,14 @@ public class Halls {
     private int hallID;
     private String hallAddress;
     private String phoneNumber;
-    private List<Room> rooms;
     
     //Class Constructor
-    public Halls(String hallName, int hallID, String address, 
-            String phoneNumber, List<Room> rooms) {
+    public Halls(String hallName, int hallID, String address,
+            String phoneNumber) {
         this.hallName = hallName;
         this.hallID = hallID;
         this.hallAddress = address;
         this.phoneNumber = phoneNumber;
-        this.rooms = rooms;
     }
     
     /* -Class getters- */    
@@ -45,9 +43,5 @@ public class Halls {
     
     public String getPhoneNumber() {
         return phoneNumber;
-    }
-    
-    public List<Room> getRooms() {
-        return rooms;
     }
 }

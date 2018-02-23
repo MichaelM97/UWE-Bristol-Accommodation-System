@@ -14,7 +14,6 @@ public class Student {
     //Declares class attributes
     private String studentName;
     private int studentID;
-    private Lease leaseNumber;
     
     //Class Constructor
     public Student(String studentName, int studentID) {
@@ -29,9 +28,5 @@ public class Student {
     
     public int getStudentID() {
         return studentID;
-    }
-    
-    public Lease getLeaseNumber() {
-        return leaseNumber;
-    }    
+    }   
 }

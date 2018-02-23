@@ -16,12 +16,12 @@ public class Room {
     //Declares class attributes
     private int roomNumber;
     private double monthlyRent;
-    private Halls hallID;
-    private byte cleanStatus;
+    private int hallID;
+    private String cleanStatus;
     
     //Class Constructor
-    public Room(int roomNumber, double monthlyRent, Halls hallID,
-            byte cleanStatus) {
+    public Room(int roomNumber, double monthlyRent, int hallID,
+            String cleanStatus) {
         this.roomNumber = roomNumber;
         this.monthlyRent = monthlyRent;
         this.hallID = hallID;
@@ -37,11 +37,11 @@ public class Room {
         return monthlyRent;
     }
     
-    public Halls getHallID() {
+    public int getHallID() {
         return hallID;
     }
     
-    public byte cleanStatus() {
+    public String cleanStatus() {
         return cleanStatus;
     }
     
@@ -51,7 +51,7 @@ public class Room {
         this.monthlyRent = monthlyRent;
     }
     
-    public void setCleanStatus(byte newCleanStatus){
+    public void setCleanStatus(String newCleanStatus){
         this.cleanStatus = newCleanStatus;
     }
 }

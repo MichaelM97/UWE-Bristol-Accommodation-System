@@ -14,13 +14,13 @@ public class Lease {
     //Declares class attributes
     private int leaseNumber;
     private int leaseDuration;
-    private Halls hallID;
-    private Room roomNumber;
-    private Student studentID;
+    private int hallID;
+    private int roomNumber;
+    private int studentID;
     
     //Class Constructor
-    public Lease(int leaseNumber, int leaseDuration, Halls hallID,
-            Room roomNumber, Student studentID) {
+    public Lease(int leaseNumber, int leaseDuration, int hallID,
+            int roomNumber, int studentID) {
         this.leaseNumber = leaseNumber;
         this.leaseDuration = leaseDuration;
         this.hallID = hallID;
@@ -37,15 +37,15 @@ public class Lease {
         return leaseDuration;
     }
     
-    public Halls getHallID() {
+    public int getHallID() {
         return hallID;
     }
     
-    public Room getRoomNumber() {
+    public int getRoomNumber() {
         return roomNumber;
     }
     
-    public Student getStudentID() {
+    public int getStudentID() {
         return studentID;
     }
     
@@ -55,7 +55,7 @@ public class Lease {
         this.leaseDuration = leaseDuration;
     }
     
-    public void setRoomNumber(Room roomNumber){
+    public void setRoomNumber(int roomNumber){
         this.roomNumber = roomNumber;
     }
 }
