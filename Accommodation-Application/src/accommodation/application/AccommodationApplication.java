@@ -38,8 +38,7 @@ public class AccommodationApplication extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
-        
+    public void start(Stage primaryStage) {        
         
         //Main page text
         Text txt = new Text ("Please select how you wish to view the data:");
@@ -82,10 +81,9 @@ public class AccommodationApplication extends Application {
                 final Label label = new Label("Room/lease information:");
                 label.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
                                 
+                DataPreloader data = new DataPreloader();
                 
-                Halls hall = new Halls();
-                ObservableList<Halls> hallData =
-                        FXCollections.observableArrayList();
+                ObservableList<Halls> hallData = data.hallData;
                 
                 //Create table headers
                 TableView table = new TableView();

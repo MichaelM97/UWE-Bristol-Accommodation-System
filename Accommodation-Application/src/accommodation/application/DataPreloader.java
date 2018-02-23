@@ -27,6 +27,9 @@ public class DataPreloader extends Preloader {
 
     ProgressBar bar;
     Stage stage;
+    
+    public ObservableList<Halls> hallData =
+                        FXCollections.observableArrayList();
 
     private Scene createPreloaderScene() {
         bar = new ProgressBar();
@@ -56,7 +59,8 @@ public class DataPreloader extends Preloader {
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
                 int hallID = Integer.parseInt(data[1]);
-                Halls hall = new Halls(data[0], hallID, data[2], data[3]);
+                this.hallData.add(new Halls(data[0], hallID, data[2], data[3]));
+                //Halls hall = new Halls(data[0], hallID, data[2], data[3]);
             }
         } catch (FileNotFoundException e) {
             System.out.println("ERROR -- File containing Halls data missing");
