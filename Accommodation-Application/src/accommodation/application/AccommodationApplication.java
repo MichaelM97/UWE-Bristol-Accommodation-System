@@ -25,8 +25,13 @@ import javafx.stage.Stage;
  */
 public class AccommodationApplication extends Application {
     
+    public static void main(String[] args) {
+        launch(args);
+    }
+
     @Override
     public void start(Stage primaryStage) {
+        
         
         //Main page text
         Text txt = new Text ("Please select how you wish to view the data:");
@@ -41,12 +46,6 @@ public class AccommodationApplication extends Application {
         managerBtn.setStyle("-fx-font-size: 2em; ");
         managerBtn.setLayoutX(30);
         managerBtn.setLayoutY(175);
-        managerBtn.setOnAction(new EventHandler<ActionEvent>() {            
-            @Override
-            public void handle(ActionEvent event) {
-                //Handle HALL MANAGER selection
-            }
-        });
         
         //Main page Warden button
         Button wardenBtn = new Button();
@@ -55,12 +54,6 @@ public class AccommodationApplication extends Application {
         wardenBtn.setStyle("-fx-font-size: 2em; ");
         wardenBtn.setLayoutX(212.5);
         wardenBtn.setLayoutY(175);
-        wardenBtn.setOnAction(new EventHandler<ActionEvent>() {            
-            @Override
-            public void handle(ActionEvent event) {
-                //Handle WARDEN selection
-            }
-        });
         
         //Main page All button
         Button allBtn = new Button();
@@ -69,19 +62,53 @@ public class AccommodationApplication extends Application {
         allBtn.setStyle("-fx-font-size: 2em; ");
         allBtn.setLayoutX(395);
         allBtn.setLayoutY(175);
+        
+        /*** HALL MANAGER Stage Handling ***/
+        managerBtn.setOnAction(new EventHandler<ActionEvent>() {            
+            @Override
+            public void handle(ActionEvent event) {                
+                primaryStage.close();
+                Stage managerStage = new Stage();
+                
+                
+                //Create pane and add objects depending on scene
+                Pane root = new Pane();
+                
+                //Set scene dimensions and title
+                Scene scene = new Scene(root, 600, 400);        
+                managerStage.setTitle("Manager View - Accommodation System");
+
+                //Set scene to stage and show
+                managerStage.setScene(scene);
+                managerStage.show();
+            }
+        });       
+     
+        
+        /*** WARDEN Stage Handling ***/
+        wardenBtn.setOnAction(new EventHandler<ActionEvent>() {            
+            @Override
+            public void handle(ActionEvent event) {
+                
+            }
+        });        
+        
+        
+        /*** ALL Stage Handling ***/
         allBtn.setOnAction(new EventHandler<ActionEvent>() {            
             @Override
             public void handle(ActionEvent event) {
-                //Handle ALL selection
+                
             }
         });
         
-        //Create pane and add objects
+        //Create pane and add objects depending on scene
         Pane root = new Pane();
         root.getChildren().add(managerBtn);
         root.getChildren().add(wardenBtn);
         root.getChildren().add(allBtn);
         root.getChildren().add(txt);
+
         
         //Set scene dimensions and title
         Scene scene = new Scene(root, 600, 350);        
@@ -90,13 +117,6 @@ public class AccommodationApplication extends Application {
         //Set scene to stage and show
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
+    }   
     
 }
