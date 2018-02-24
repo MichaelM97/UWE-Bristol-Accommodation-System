@@ -41,7 +41,7 @@ public class Room {
         return hallID;
     }
     
-    public String cleanStatus() {
+    public String getCleanStatus() {
         return cleanStatus;
     }
     
