@@ -108,61 +108,29 @@ public class AccommodationApplication extends Application {
                 label.setFont(Font.font("Verdana", FontWeight.BOLD, 20));  
                 
                 //Fill tableList with data               
-                for (Room room : roomList) {
-                    for (Halls hall : hallList) {
-                        //Find the hall that the room is in
-                        if (hall.getHallID() == room.getHallID()) {
-                            tableList.addAll(hall.getHallName(),
-                                    room.getRoomNumber(),
-                                    room.getOccupancy(),
-                                    room.getCleanStatus()
-                            );
-                            //Find a lease that may exist for this room
-                            for (Lease lease : leaseList) {
-                                if ((lease.getRoomNumber() ==
-                                        room.getRoomNumber()) &&
-                                        (lease.getHallID() ==
-                                        hall.getHallID())) {
-                                    tableList.add(lease.getLeaseNumber());
-                                    //Find the student associated with the lease
-                                    for (Student student : studentList) {
-                                        if (student.getStudentID() ==
-                                                lease.getStudentID()) {
-                                            tableList.add(student.getStudentName());
-                                            break;
-                                        }
-                                    }
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
-                }              
-                
-                System.out.println(tableList);
+                getTableData();  
                 
                 //Create table columns and set fill data
                 TableView table = new TableView();
                 table.setEditable(true);
                 TableColumn hallNameCol = new TableColumn("Hall Name");
                 hallNameCol.setCellValueFactory(
-                    new PropertyValueFactory("hallName"));
+                    new PropertyValueFactory<Table, String>("hallName"));
                 TableColumn roomNumCol = new TableColumn("Room Number");
                 roomNumCol.setCellValueFactory(
-                    new PropertyValueFactory<Room, Integer>("roomNumber"));
+                    new PropertyValueFactory<Table, Integer>("roomNumber"));
                 TableColumn occupancyCol = new TableColumn("Occupancy Status");
                 occupancyCol.setCellValueFactory(
-                    new PropertyValueFactory<Room, String>("occupancy"));
+                    new PropertyValueFactory<Table, String>("occupancy"));
                 TableColumn leaseNumCol = new TableColumn("Lease Number");
                 leaseNumCol.setCellValueFactory(
-                    new PropertyValueFactory<Lease, Integer>("leaseNumber"));
+                    new PropertyValueFactory<Table, Integer>("leaseNumber"));
                 TableColumn studentNameCol = new TableColumn("Student Name");
                 studentNameCol.setCellValueFactory(
-                    new PropertyValueFactory<Student, String>("studentName"));
+                    new PropertyValueFactory<Table, String>("studentName"));
                 TableColumn cleaningCol = new TableColumn("Cleaning Status");
                 cleaningCol.setCellValueFactory(
-                    new PropertyValueFactory<Room, String>("cleanStatus"));
+                    new PropertyValueFactory<Table, String>("cleanStatus")); 
                 table.setItems(tableList);
                 table.getColumns().addAll(hallNameCol, roomNumCol,
                         occupancyCol, leaseNumCol, studentNameCol, cleaningCol);                
@@ -172,7 +140,8 @@ public class AccommodationApplication extends Application {
                 tableVbox.setSpacing(5);
                 tableVbox.getChildren().addAll(label, table);
                 tableVbox.setLayoutX(20);
-                tableVbox.setLayoutY(20);                
+                tableVbox.setLayoutY(20);   
+                tableVbox.setPrefSize(585, 400);
                 
                 //Warden page Back button
                 Button backBtn = new Button();
@@ -197,7 +166,7 @@ public class AccommodationApplication extends Application {
                 root.getChildren().addAll(tableVbox);
                 
                 //Set scene dimensions and title
-                Scene scene = new Scene(root, 600, 500);        
+                Scene scene = new Scene(root, 625, 500);        
                 managerStage.setTitle("Manager View - Accommodation System");
 
                 //Set scene to stage and show
@@ -307,4 +276,46 @@ public class AccommodationApplication extends Application {
         }
     }
     
+    public void getTableData() {        
+        //Variables
+        String hallName, occupancy, cleanStatus, studentName = "N/A";
+        int roomNumber, leaseNumber = -1;
+        
+        //Load data into table class & list
+        for (Room room : roomList) {
+            for (Halls hall : hallList) {
+                //Find the hall that the room is in
+                if (hall.getHallID() == room.getHallID()) {
+                    hallName = hall.getHallName();
+                    roomNumber = room.getRoomNumber();
+                    occupancy = room.getOccupancy();
+                    cleanStatus = room.getCleanStatus();
+                    //Find a lease that may exist for this room
+                    for (Lease lease : leaseList) {
+                        if ((lease.getRoomNumber() ==
+                                room.getRoomNumber()) &&
+                                (lease.getHallID() ==
+                                hall.getHallID())) {
+                            leaseNumber = lease.getLeaseNumber();
+                            //Find the student associated with the lease
+                            for (Student student : studentList) {
+                                if (student.getStudentID() ==
+                                        lease.getStudentID()) {
+                                    studentName = student.getStudentName();
+                                    break;
+                                }
+                            }
+                            break;
+                        } else {
+                            leaseNumber = -1;
+                            studentName = "N/A";
+                        }
+                    }
+                    tableList.add(new Table(hallName, roomNumber, occupancy,
+                            cleanStatus, leaseNumber, studentName));
+                    break;
+                }
+            }
+        }   
+    }   
 }
