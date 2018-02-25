@@ -49,8 +49,7 @@ public class Lease {
         return studentID;
     }
     
-    /* -Class Setters- */
-    
+    /* -Class Setters- */    
     public void setLeaseDuration(int leaseDuration) {
         this.leaseDuration = leaseDuration;
     }
