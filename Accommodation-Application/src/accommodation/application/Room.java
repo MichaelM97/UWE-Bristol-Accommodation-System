@@ -67,7 +67,11 @@ public class Room {
         this.monthlyRent = monthlyRent;
     }
     
-    public void setCleanStatus(String newCleanStatus){
-        this.cleanStatus = newCleanStatus;
+    public void setCleanStatus(String cleanStatus){
+        this.cleanStatus = cleanStatus;
+    }
+    
+    public void setOccupancy(String occupancy){
+        this.occupancy = occupancy;
     }
 }

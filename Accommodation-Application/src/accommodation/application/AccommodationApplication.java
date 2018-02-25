@@ -22,6 +22,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -136,37 +137,47 @@ public class AccommodationApplication extends Application {
                 cleanStatusLabel.setLayoutX(277.5);
                 cleanStatusLabel.setLayoutY(427.5);                
                 
-                //Text Areas
+                //Text Areas & Combo Boxes
                 TextArea hallNameArea = new TextArea();
                 TextArea roomNumberArea = new TextArea(); 
-                TextArea occupancyArea = new TextArea();
+                ComboBox occupancyCombo = new ComboBox();
                 TextArea leaseNumberArea = new TextArea();
-                TextArea studentNameArea = new TextArea(); 
+                ComboBox studentNameCombo = new ComboBox(); 
                 TextArea cleanStatusArea = new TextArea();
                 hallNameArea.setEditable(false);
-                hallNameArea.setPrefSize(100, 20);
+                hallNameArea.setPrefSize(100, 40);
                 hallNameArea.setLayoutX(150);
-                hallNameArea.setLayoutY(330);                
+                hallNameArea.setLayoutY(330);
+                hallNameArea.setStyle("-fx-control-inner-background: #D6D6D6");
                 roomNumberArea.setEditable(false);
-                roomNumberArea.setPrefSize(100, 20);
+                roomNumberArea.setPrefSize(100, 40);
                 roomNumberArea.setLayoutX(150);
-                roomNumberArea.setLayoutY(375);               
-                occupancyArea.setEditable(false);
-                occupancyArea.setPrefSize(100, 20);
-                occupancyArea.setLayoutX(150);
-                occupancyArea.setLayoutY(420);
-                leaseNumberArea.setEditable(false);
-                leaseNumberArea.setPrefSize(100, 20);
+                roomNumberArea.setLayoutY(375);    
+                roomNumberArea.setStyle("-fx-control-inner-background: #D6D6D6");
+                occupancyCombo.setEditable(true);
+                occupancyCombo.setPrefSize(140, 40);
+                occupancyCombo.setLayoutX(400);
+                occupancyCombo.setLayoutY(420);
+                occupancyCombo.getItems().addAll(
+                        "Occupied",
+                        "Unoccupied"
+                    );
+                leaseNumberArea.setEditable(true);
+                leaseNumberArea.setPrefSize(140, 40);
                 leaseNumberArea.setLayoutX(400);
                 leaseNumberArea.setLayoutY(330);
-                studentNameArea.setEditable(false);
-                studentNameArea.setPrefSize(100, 20);
-                studentNameArea.setLayoutX(400);
-                studentNameArea.setLayoutY(375);
+                studentNameCombo.setEditable(true);
+                studentNameCombo.setPrefSize(140, 40);
+                studentNameCombo.setLayoutX(400);
+                studentNameCombo.setLayoutY(375);
+                for (Student currentStudent : studentList) {                    
+                    studentNameCombo.getItems().add(currentStudent.getStudentName());
+                }
                 cleanStatusArea.setEditable(false);
-                cleanStatusArea.setPrefSize(100, 20);
-                cleanStatusArea.setLayoutX(400);
+                cleanStatusArea.setPrefSize(100, 40);
+                cleanStatusArea.setLayoutX(150);
                 cleanStatusArea.setLayoutY(420);
+                cleanStatusArea.setStyle("-fx-control-inner-background: #D6D6D6");
                 
                 //Table label
                 Label tableLabel = new Label("Room/lease information:");
@@ -209,11 +220,11 @@ public class AccommodationApplication extends Application {
                                         currentTable.getHallName());
                                 roomNumberArea.setText(Integer.toString(
                                         currentTable.getRoomNumber()));
-                                occupancyArea.setText(
+                                occupancyCombo.getSelectionModel().select(
                                         currentTable.getOccupancy());
                                 leaseNumberArea.setText(
                                         currentTable.getLeaseNumber());
-                                studentNameArea.setText(
+                                studentNameCombo.getSelectionModel().select(
                                         currentTable.getStudentName());
                                 cleanStatusArea.setText(
                                         currentTable.getCleanStatus());
@@ -229,15 +240,72 @@ public class AccommodationApplication extends Application {
                 tableVbox.getChildren().addAll(tableLabel, table);
                 tableVbox.setLayoutX(20);
                 tableVbox.setLayoutY(20);   
-                tableVbox.setPrefSize(585, 300);   
+                tableVbox.setPrefSize(585, 300);
+                
+                //Update button
+                Button updateBtn = new Button();
+                updateBtn.setText("Update");
+                updateBtn.setPrefSize(100, 30);
+                updateBtn.setStyle("-fx-font-size: 1em; ");
+                updateBtn.setLayoutX(520);
+                updateBtn.setLayoutY(465); 
+                //Change data in Table & relevant classes when button pressed
+                updateBtn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override public void handle(ActionEvent e) {
+                        for (Table currentTable : tableList) {
+                            if(currentTable == table.getSelectionModel()
+                                    .getSelectedItem()) {
+                                try {
+                                    //Change data in table class
+                                    int leaseNumInt = Integer.parseInt(
+                                            leaseNumberArea.getText());
+                                    currentTable.setLeaseNumber(
+                                        leaseNumberArea.getText());
+                                    currentTable.setOccupancy(
+                                        occupancyCombo.getValue().toString());                                
+                                    currentTable.setStudentName(studentNameCombo
+                                            .getValue().toString());
+                                    table.refresh();
+                                    
+                                    //Change data in other classes
+                                    for (Halls currentHall : hallList) {
+                                        for (Room currentRoom : roomList) {
+                                            if (currentRoom.getHallID() == currentHall.getHallID()) {
+                                                currentRoom.setOccupancy(occupancyCombo.getValue().toString());
+                                                for (Lease currentLease : leaseList) {
+                                                    if (currentLease.getRoomNumber() == currentRoom.getRoomNumber()){
+                                                        currentLease.setLeaseNumber(leaseNumInt);
+                                                        for (Student currentStudent : studentList) {
+                                                            if (currentLease.getStudentID() == currentStudent.getStudentID()) {
+                                                                currentStudent.setStudentName(studentNameCombo.getValue().toString());
+                                                                break;
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                }   
+                                                break;
+                                            }                                            
+                                        }
+                                    }
+                                    
+                                } catch (NumberFormatException eNum) {
+                                    leaseNumberArea.setText("INVALID INPUT");
+                                }                                
+                                break;
+                            } 
+                        }
+                    }
+                });
+                
                 
                 //Back button
                 Button backBtn = new Button();
                 backBtn.setText("Back");
                 backBtn.setPrefSize(100, 30);
                 backBtn.setStyle("-fx-font-size: 1em; ");
-                backBtn.setLayoutX(20);
-                backBtn.setLayoutY(460);                
+                backBtn.setLayoutX(5);
+                backBtn.setLayoutY(465);                
                 
                 //Back button handling
                 backBtn.setOnAction(new EventHandler<ActionEvent>() {            
@@ -250,13 +318,14 @@ public class AccommodationApplication extends Application {
                 
                 //Create pane and add objects depending on scene
                 Pane root = new Pane();
+                root.getChildren().add(updateBtn);
                 root.getChildren().add(backBtn);
                 root.getChildren().addAll(tableVbox);
                 root.getChildren().add(hallNameArea);
                 root.getChildren().add(roomNumberArea);
-                root.getChildren().add(occupancyArea);
+                root.getChildren().add(occupancyCombo);
                 root.getChildren().add(leaseNumberArea);
-                root.getChildren().add(studentNameArea);
+                root.getChildren().add(studentNameCombo);
                 root.getChildren().add(cleanStatusArea);
                 root.getChildren().addAll(hallNameLabel,
                             roomNumberLabel,
