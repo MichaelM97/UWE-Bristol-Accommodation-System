@@ -40,17 +40,16 @@ import javafx.stage.Stage;
  */
 public class AccommodationApplication extends Application {
     
-    //Lists used for storing table data
-    private ObservableList<Halls> hallList =
+    //List used for storing table data
+    private ObservableList tableList =
                         FXCollections.observableArrayList();
-    private ObservableList<Room> roomList =
-                        FXCollections.observableArrayList();
-    private ObservableList<Student> studentList =
-                        FXCollections.observableArrayList();
-    private ObservableList<Lease> leaseList =
-                        FXCollections.observableArrayList();
-    private ObservableList<Lease> tableList =
-                        FXCollections.observableArrayList();
+    
+    //Lists used for storing object instances
+    private ArrayList<Halls> hallList = new ArrayList();
+    private ArrayList<Room> roomList = new ArrayList();
+    private ArrayList<Student> studentList = new ArrayList();
+    private ArrayList<Lease> leaseList = new ArrayList();
+    
     
     public static void main(String[] args) {
         launch(args);
@@ -106,21 +105,64 @@ public class AccommodationApplication extends Application {
                 
                 //Table label
                 final Label label = new Label("Room/lease information:");
-                label.setFont(Font.font("Verdana", FontWeight.BOLD, 20));                   
+                label.setFont(Font.font("Verdana", FontWeight.BOLD, 20));  
+                
+                //Fill tableList with data               
+                for (Room room : roomList) {
+                    for (Halls hall : hallList) {
+                        //Find the hall that the room is in
+                        if (hall.getHallID() == room.getHallID()) {
+                            tableList.addAll(hall.getHallName(),
+                                    room.getRoomNumber(),
+                                    room.getOccupancy(),
+                                    room.getCleanStatus()
+                            );
+                            //Find a lease that may exist for this room
+                            for (Lease lease : leaseList) {
+                                if ((lease.getRoomNumber() ==
+                                        room.getRoomNumber()) &&
+                                        (lease.getHallID() ==
+                                        hall.getHallID())) {
+                                    tableList.add(lease.getLeaseNumber());
+                                    //Find the student associated with the lease
+                                    for (Student student : studentList) {
+                                        if (student.getStudentID() ==
+                                                lease.getStudentID()) {
+                                            tableList.add(student.getStudentName());
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }              
+                
+                System.out.println(tableList);
                 
                 //Create table columns and set fill data
                 TableView table = new TableView();
                 table.setEditable(true);
                 TableColumn hallNameCol = new TableColumn("Hall Name");
                 hallNameCol.setCellValueFactory(
-                    new PropertyValueFactory<Halls, String>("hallName"));
+                    new PropertyValueFactory("hallName"));
                 TableColumn roomNumCol = new TableColumn("Room Number");
                 roomNumCol.setCellValueFactory(
                     new PropertyValueFactory<Room, Integer>("roomNumber"));
                 TableColumn occupancyCol = new TableColumn("Occupancy Status");
+                occupancyCol.setCellValueFactory(
+                    new PropertyValueFactory<Room, String>("occupancy"));
                 TableColumn leaseNumCol = new TableColumn("Lease Number");
+                leaseNumCol.setCellValueFactory(
+                    new PropertyValueFactory<Lease, Integer>("leaseNumber"));
                 TableColumn studentNameCol = new TableColumn("Student Name");
+                studentNameCol.setCellValueFactory(
+                    new PropertyValueFactory<Student, String>("studentName"));
                 TableColumn cleaningCol = new TableColumn("Cleaning Status");
+                cleaningCol.setCellValueFactory(
+                    new PropertyValueFactory<Room, String>("cleanStatus"));
                 table.setItems(tableList);
                 table.getColumns().addAll(hallNameCol, roomNumCol,
                         occupancyCol, leaseNumCol, studentNameCol, cleaningCol);                
