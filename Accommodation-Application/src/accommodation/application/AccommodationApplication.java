@@ -256,15 +256,24 @@ public class AccommodationApplication extends Application {
                             if(currentTable == table.getSelectionModel()
                                     .getSelectedItem()) {
                                 try {
-                                    //Change data in table class
+                                    //Check if lease number valid int
                                     int leaseNumInt = Integer.parseInt(
                                             leaseNumberArea.getText());
+                                    
+                                    //Check if student name in use
+                                    for (Table tableStudentCheck : tableList) {
+                                        if (studentNameCombo.getValue().toString().equalsIgnoreCase(tableStudentCheck.getStudentName())) {
+                                            throw new IOException();
+                                        }
+                                    }
+                                    
+                                    //Change data in Table Class
                                     currentTable.setLeaseNumber(
                                         leaseNumberArea.getText());
                                     currentTable.setOccupancy(
-                                        occupancyCombo.getValue().toString());                                
+                                        occupancyCombo.getValue().toString());                                        
                                     currentTable.setStudentName(studentNameCombo
-                                            .getValue().toString());
+                                            .getValue().toString());  
                                     table.refresh();
                                     
                                     //Change data in other classes
@@ -291,7 +300,11 @@ public class AccommodationApplication extends Application {
                                     
                                 } catch (NumberFormatException eNum) {
                                     leaseNumberArea.setText("INVALID INPUT");
-                                }                                
+                                    table.refresh();
+                                } catch (IOException eName) {                                
+                                    studentNameCombo.getSelectionModel().select("STUDENT HAS EXISTING LEASE");
+                                    table.refresh();
+                                }
                                 break;
                             } 
                         }
