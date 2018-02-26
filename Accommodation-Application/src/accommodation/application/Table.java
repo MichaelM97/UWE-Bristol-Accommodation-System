@@ -75,7 +75,11 @@ public class Table {
     }  
     
     public void setLeaseDuration(String leaseDuration) {
-        this.leaseDuration = leaseDuration + " Months";
+        if (leaseDuration.equals("N/A")) {
+            this.leaseDuration = leaseDuration;
+        } else {
+            this.leaseDuration = leaseDuration + " Months";
+        }        
     }    
     
     public void setStudentName(String studentName) {

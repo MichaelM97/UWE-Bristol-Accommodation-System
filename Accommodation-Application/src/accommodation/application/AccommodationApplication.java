@@ -51,41 +51,40 @@ import javafx.stage.Stage;
  * @author MichaelM97
  */
 public class AccommodationApplication extends Application {
-    
+
     //List used for storing table data
-    private ObservableList<Table> tableList =
-                        FXCollections.observableArrayList();
-    
+    private ObservableList<Table> tableList
+            = FXCollections.observableArrayList();
+
     //Lists used for storing object instances
     private ArrayList<Halls> hallList = new ArrayList();
     private ArrayList<Room> roomList = new ArrayList();
     private ArrayList<Student> studentList = new ArrayList();
     private ArrayList<Lease> leaseList = new ArrayList();
-    
-    
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) {  
-        
+    public void start(Stage primaryStage) {
+
         //Load file data
         try {
             getFileData();
         } catch (IOException ex) {
             Logger.getLogger(AccommodationApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         //Fill tableList with data               
-        getTableData();  
-        
+        getTableData();
+
         //Main page text
-        Text mainText = new Text ("Please select how you wish to view the data:");
+        Text mainText = new Text("Please select how you wish to view the data:");
         mainText.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
         mainText.setLayoutX(50);
         mainText.setLayoutY(100);
-        
+
         //Main page Hall Manager button
         Button managerBtn = new Button();
         managerBtn.setText("Hall Manager");
@@ -93,7 +92,7 @@ public class AccommodationApplication extends Application {
         managerBtn.setStyle("-fx-font-size: 2em; ");
         managerBtn.setLayoutX(30);
         managerBtn.setLayoutY(175);
-        
+
         //Main page Warden button
         Button wardenBtn = new Button();
         wardenBtn.setText("Warden");
@@ -101,7 +100,7 @@ public class AccommodationApplication extends Application {
         wardenBtn.setStyle("-fx-font-size: 2em; ");
         wardenBtn.setLayoutX(212.5);
         wardenBtn.setLayoutY(175);
-        
+
         //Main page All button
         Button allBtn = new Button();
         allBtn.setText("All");
@@ -109,7 +108,7 @@ public class AccommodationApplication extends Application {
         allBtn.setStyle("-fx-font-size: 2em; ");
         allBtn.setLayoutX(395);
         allBtn.setLayoutY(175);
-        
+
         //Main page warning label
         Label warningLabel = new Label("WARNING! Please do not use this "
                 + "program with any data files open!");
@@ -117,15 +116,17 @@ public class AccommodationApplication extends Application {
         warningLabel.setLayoutX(15);
         warningLabel.setLayoutY(300);
         warningLabel.setTextFill(Color.web("#FF0000"));
-        
-        /*** HALL MANAGER Stage Handling ***/
-        managerBtn.setOnAction(new EventHandler<ActionEvent>() {            
+
+        /**
+         * * HALL MANAGER Stage Handling **
+         */
+        managerBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {    
+            public void handle(ActionEvent event) {
                 //Switch stage
                 primaryStage.close();
                 Stage managerStage = new Stage();
-                
+
                 //Text Area Labels
                 Label hallNameLabel = new Label("Hall Name:");
                 Label roomNumberLabel = new Label("Room Number:");
@@ -139,38 +140,38 @@ public class AccommodationApplication extends Application {
                 hallNameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
                 hallNameLabel.setLayoutX(50);
                 hallNameLabel.setLayoutY(337.5);
-                roomNumberLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15)); 
+                roomNumberLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
                 roomNumberLabel.setLayoutX(15);
                 roomNumberLabel.setLayoutY(382.5);
-                occupancyLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15)); 
+                occupancyLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
                 occupancyLabel.setLayoutX(442.5);
                 occupancyLabel.setLayoutY(427.5);
-                leaseNumberLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15)); 
+                leaseNumberLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
                 leaseNumberLabel.setLayoutX(405);
                 leaseNumberLabel.setLayoutY(337.5);
-                subLeaseNumLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 12)); 
+                subLeaseNumLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
                 subLeaseNumLabel.setLayoutX(422.5);
                 subLeaseNumLabel.setLayoutY(360);
-                leaseDurationLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15)); 
+                leaseDurationLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
                 leaseDurationLabel.setLayoutX(240);
                 leaseDurationLabel.setLayoutY(490);
-                subLeaseDurLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 12)); 
+                subLeaseDurLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
                 subLeaseDurLabel.setLayoutX(275);
                 subLeaseDurLabel.setLayoutY(512.5);
-                studentNameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15)); 
+                studentNameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
                 studentNameLabel.setLayoutX(405);
                 studentNameLabel.setLayoutY(382.5);
-                cleanStatusLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15)); 
+                cleanStatusLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
                 cleanStatusLabel.setLayoutX(30);
-                cleanStatusLabel.setLayoutY(427.5);                
-                
+                cleanStatusLabel.setLayoutY(427.5);
+
                 //Text Areas & Combo Boxes
                 TextArea hallNameArea = new TextArea();
-                TextArea roomNumberArea = new TextArea(); 
+                TextArea roomNumberArea = new TextArea();
                 ComboBox occupancyCombo = new ComboBox();
                 TextArea leaseNumberArea = new TextArea();
                 TextArea leaseDurationArea = new TextArea();
-                ComboBox studentNameCombo = new ComboBox(); 
+                ComboBox studentNameCombo = new ComboBox();
                 TextArea cleanStatusArea = new TextArea();
                 hallNameArea.setEditable(false);
                 hallNameArea.setPrefSize(140, 40);
@@ -180,7 +181,7 @@ public class AccommodationApplication extends Application {
                 roomNumberArea.setEditable(false);
                 roomNumberArea.setPrefSize(140, 40);
                 roomNumberArea.setLayoutX(150);
-                roomNumberArea.setLayoutY(375);    
+                roomNumberArea.setLayoutY(375);
                 roomNumberArea.setStyle("-fx-control-inner-background: #D6D6D6");
                 occupancyCombo.setEditable(true);
                 occupancyCombo.setPrefSize(140, 40);
@@ -189,7 +190,7 @@ public class AccommodationApplication extends Application {
                 occupancyCombo.getItems().addAll(
                         "Occupied",
                         "Unoccupied"
-                    );
+                );
                 leaseNumberArea.setEditable(true);
                 leaseNumberArea.setPrefSize(140, 40);
                 leaseNumberArea.setLayoutX(550);
@@ -202,7 +203,7 @@ public class AccommodationApplication extends Application {
                 studentNameCombo.setPrefSize(140, 40);
                 studentNameCombo.setLayoutX(550);
                 studentNameCombo.setLayoutY(375);
-                for (Student currentStudent : studentList) {                    
+                for (Student currentStudent : studentList) {
                     studentNameCombo.getItems().add(currentStudent.getStudentName());
                 }
                 cleanStatusArea.setEditable(false);
@@ -210,47 +211,47 @@ public class AccommodationApplication extends Application {
                 cleanStatusArea.setLayoutX(150);
                 cleanStatusArea.setLayoutY(420);
                 cleanStatusArea.setStyle("-fx-control-inner-background: #D6D6D6");
-                
+
                 //Table label
                 Label tableLabel = new Label("Room/lease information:");
-                tableLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));  
-                
+                tableLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+
                 //Create table columns and set fill data
                 TableView table = new TableView();
                 table.setEditable(true);
                 TableColumn hallNameCol = new TableColumn("Hall Name");
                 hallNameCol.setCellValueFactory(
-                    new PropertyValueFactory<Table, String>("hallName"));
+                        new PropertyValueFactory<Table, String>("hallName"));
                 TableColumn roomNumCol = new TableColumn("Room Number");
                 roomNumCol.setCellValueFactory(
-                    new PropertyValueFactory<Table, Integer>("roomNumber"));
+                        new PropertyValueFactory<Table, Integer>("roomNumber"));
                 TableColumn occupancyCol = new TableColumn("Occupancy Status");
                 occupancyCol.setCellValueFactory(
-                    new PropertyValueFactory<Table, String>("occupancy"));
+                        new PropertyValueFactory<Table, String>("occupancy"));
                 TableColumn leaseNumCol = new TableColumn("Lease Number");
                 leaseNumCol.setCellValueFactory(
-                    new PropertyValueFactory<Table, String>("leaseNumber"));
+                        new PropertyValueFactory<Table, String>("leaseNumber"));
                 TableColumn leaseDurCol = new TableColumn("Lease Duration");
                 leaseDurCol.setCellValueFactory(
-                    new PropertyValueFactory<Table, String>("leaseDuration"));
+                        new PropertyValueFactory<Table, String>("leaseDuration"));
                 TableColumn studentNameCol = new TableColumn("Student Name");
                 studentNameCol.setCellValueFactory(
-                    new PropertyValueFactory<Table, String>("studentName"));
+                        new PropertyValueFactory<Table, String>("studentName"));
                 TableColumn cleaningCol = new TableColumn("Cleaning Status");
                 cleaningCol.setCellValueFactory(
-                    new PropertyValueFactory<Table, String>("cleanStatus")); 
+                        new PropertyValueFactory<Table, String>("cleanStatus"));
                 table.setItems(tableList);
                 table.getColumns().addAll(hallNameCol, roomNumCol,
                         occupancyCol, leaseNumCol, leaseDurCol,
-                        studentNameCol, cleaningCol);                
-                
+                        studentNameCol, cleaningCol);
+
                 //Detect row selection, fill text areas with corresponding data
                 table.setOnMousePressed(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
                         for (Table currentTable : tableList) {
-                            if(currentTable == 
-                                    table.getSelectionModel()
+                            if (currentTable
+                                    == table.getSelectionModel()
                                             .getSelectedItem()) {
                                 hallNameArea.setText(
                                         currentTable.getHallName());
@@ -270,29 +271,30 @@ public class AccommodationApplication extends Application {
                                 break;
                             }
                         }
-                    }                    
-                });                
-                
+                    }
+                });
+
                 //Form table                
                 VBox tableVbox = new VBox();
                 tableVbox.setSpacing(5);
                 tableVbox.getChildren().addAll(tableLabel, table);
                 tableVbox.setLayoutX(20);
-                tableVbox.setLayoutY(20);   
+                tableVbox.setLayoutY(20);
                 tableVbox.setPrefSize(685, 300);
-                
+
                 //Update button
                 Button updateBtn = new Button();
                 updateBtn.setText("Update");
                 updateBtn.setPrefSize(100, 30);
                 updateBtn.setStyle("-fx-font-size: 1em; ");
                 updateBtn.setLayoutX(620);
-                updateBtn.setLayoutY(525); 
+                updateBtn.setLayoutY(525);
                 //Change data in Table & relevant classes when button pressed
                 updateBtn.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override public void handle(ActionEvent e) {
+                    @Override
+                    public void handle(ActionEvent e) {
                         for (Table currentTable : tableList) {
-                            if(currentTable == table.getSelectionModel()
+                            if (currentTable == table.getSelectionModel()
                                     .getSelectedItem()) {
                                 //Create popup used for error display
                                 Stage errorDialog = new Stage();
@@ -301,92 +303,90 @@ public class AccommodationApplication extends Application {
                                 errorDialog.setTitle("ERROR");
                                 VBox dialogVbox = new VBox(20);
                                 Scene dialogScene = new Scene(dialogVbox, 300, 50);
-                                errorDialog.setScene(dialogScene);   
+                                errorDialog.setScene(dialogScene);
                                 Text errorText = new Text();
                                 errorText.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
-                                
+
                                 try {
                                     //Check if lease number is valid int
                                     errorText.setText("Invalid lease number.");
                                     int leaseNumInt = Integer.parseInt(
-                                            leaseNumberArea.getText());                                  
+                                            leaseNumberArea.getText());
                                     dialogVbox.getChildren().clear();
-                                    
+
                                     //Check if lease number is greater than 0
                                     errorText.setText("Lease number must be \n between 1 - 999,999.");
                                     if (leaseNumInt < 1 || leaseNumInt > 999999) {
                                         throw new NumberFormatException();
-                                    }                           
+                                    }
                                     dialogVbox.getChildren().clear();
-                                    
+
                                     //Check if lease duration is valid int
                                     errorText.setText("Invalid lease duration.");
                                     int leaseDurInt = Integer.parseInt(
-                                            leaseDurationArea.getText().replace(" Months", ""));                                  
-                                    dialogVbox.getChildren().clear();       
-                                    
-                                    //Check if lease duration is greater than 0
-                                    errorText.setText("Lease duration must be greater than 0 months.");
-                                    if (leaseDurInt < 1) {
-                                        throw new NumberFormatException();
-                                    }                           
+                                            leaseDurationArea.getText().replace(" Months", ""));
                                     dialogVbox.getChildren().clear();
-                                                                        
+
+                                    //Check if lease duration is greater than 0
+                                    errorText.setText("Lease duration must be\nbetween 1 - 48 months.");
+                                    if (leaseDurInt < 1 || leaseDurInt > 48) {
+                                        throw new NumberFormatException();
+                                    }
+                                    dialogVbox.getChildren().clear();
+
                                     //Check if room clean status
                                     if (cleanStatusArea.getText().equals("Offline")) {
                                         errorText.setText("Room is offline.");
                                         throw new NumberFormatException();
-                                    }         
-                                    
-                                    //Change data in other classes
-                                    boolean newLease = false;
+                                    }
+
+                                    //Check if lease number in use
+                                    if (leaseNumberArea.getText().equals(currentTable.getLeaseNumber())) {
+                                    } else {
+                                        for (Table tableLeaseCheck : tableList) {
+                                            if (leaseNumberArea.getText().equalsIgnoreCase(tableLeaseCheck.getLeaseNumber())) {
+                                                errorText.setText("Lease number already in use.");
+                                                throw new NumberFormatException();
+                                            }
+                                        }
+                                    }
+
+                                    //Check if student name in use
+                                    if (studentNameCombo.getValue().toString().equals(currentTable.getStudentName())) {
+                                    } else {
+                                        for (Table tableStudentCheck : tableList) {
+                                            if (studentNameCombo.getValue().toString().equalsIgnoreCase(tableStudentCheck.getStudentName())) {
+                                                errorText.setText("Student already has a lease.");
+                                                throw new NumberFormatException();
+                                            }
+                                        }
+                                    }
+
+                                    //Change data in relevant classes                                   
                                     for (Halls currentHall : hallList) {
                                         for (Room currentRoom : roomList) {
                                             if ((hallNameArea.getText().equals(currentHall.getHallName()))
-                                                    &&(currentRoom.getRoomNumber() == Integer.parseInt(roomNumberArea.getText()))) {
+                                                    && (currentRoom.getRoomNumber() == Integer.parseInt(roomNumberArea.getText()))) {
                                                 currentRoom.setOccupancy(occupancyCombo.getValue().toString());
-                                                for (Lease currentLease : leaseList) { //Check if new lease needs to be created
-                                                    if (leaseNumberArea.getText().equals(Integer.toString(currentLease.getLeaseNumber()))) {
-                                                        newLease = false;
-                                                    } else {
-                                                        newLease = true;
-                                                        System.out.println(currentLease.getLeaseNumber());
-                                                        System.out.println(leaseNumberArea.getText());                                                        
-                                                    }
-                                                }
                                                 //Get student ID
                                                 int studentID = 0;
                                                 for (Student currentStudent : studentList) {
                                                     if (studentNameCombo.getValue().toString().equals(currentStudent.getStudentName())) {
-                                                       studentID = currentStudent.getStudentID();
-                                                       break;
-                                                    }                                                      
-                                                }                                                
-                                                if (newLease == true) {//Create new lease if needed
-                                                    //Check if student name in use
-                                                    for (Table tableStudentCheck : tableList) {
-                                                        if (studentNameCombo.getValue().toString().equalsIgnoreCase(tableStudentCheck.getStudentName())) {
-                                                            errorText.setText("Student already has a lease.");
-                                                            throw new NumberFormatException();
-                                                        } 
+                                                        studentID = currentStudent.getStudentID();
+                                                        break;
                                                     }
-                                                    //Check if lease number in use
-                                                    for (Table tableLeaseCheck : tableList) {
-                                                        if (leaseNumberArea.getText().equalsIgnoreCase(tableLeaseCheck.getLeaseNumber())) {
-                                                            errorText.setText("Lease number already in use.");
-                                                            throw new NumberFormatException();
-                                                        } 
-                                                    }      
+                                                }
+                                                if (currentTable.getLeaseNumber().equals("N/A")) {//Create new lease if needed                                                                                                   
                                                     int leaseNumber = Integer.parseInt(leaseNumberArea.getText());
                                                     int leaseDuration = Integer.parseInt(leaseDurationArea.getText());
                                                     int hallID = currentHall.getHallID();
-                                                    int roomNumber = currentRoom.getRoomNumber();                                                    
+                                                    int roomNumber = currentRoom.getRoomNumber();
                                                     leaseList.add(new Lease(leaseNumber, leaseDuration, hallID,
-                                                        roomNumber, studentID));                                                        
+                                                            roomNumber, studentID));
                                                     break;
                                                 } else { //Append existing lease
                                                     for (Lease currentLease : leaseList) {
-                                                        if (currentLease.getLeaseNumber() == Integer.parseInt(leaseNumberArea.getText())) {
+                                                        if (leaseNumberArea.getText().equals(Integer.toString(currentLease.getLeaseNumber()))) {
                                                             currentLease.setLeaseNumber(Integer.parseInt(leaseNumberArea.getText()));
                                                             currentLease.setLeaseDuration(Integer.parseInt(leaseDurationArea.getText()));
                                                             currentLease.setStudentID(studentID);
@@ -394,28 +394,29 @@ public class AccommodationApplication extends Application {
                                                         }
                                                     }
                                                 }
-                                            }                                            
+                                            }
                                         }
                                     }
+
                                     //Change data in Table Class
                                     currentTable.setLeaseNumber(
-                                        leaseNumberArea.getText());
+                                            leaseNumberArea.getText());
                                     currentTable.setLeaseDuration(
-                                        leaseDurationArea.getText());
+                                            leaseDurationArea.getText());
                                     currentTable.setOccupancy(
-                                        occupancyCombo.getValue().toString());                                        
+                                            occupancyCombo.getValue().toString());
                                     currentTable.setStudentName(studentNameCombo
-                                            .getValue().toString());  
+                                            .getValue().toString());
                                     table.refresh();
-                                    
-                                } catch (NumberFormatException eNum) {                                    
+
+                                } catch (NumberFormatException eNum) {
                                     errorText.setTextAlignment(TextAlignment.CENTER);
-                                    dialogVbox.getChildren().add(errorText);                                    
+                                    dialogVbox.getChildren().add(errorText);
                                     dialogVbox.setAlignment(Pos.CENTER);
                                     errorDialog.show();
                                 }
                                 break;
-                            } 
+                            }
                         }
                         try {
                             saveFileData();
@@ -424,92 +425,174 @@ public class AccommodationApplication extends Application {
                         }
                     }
                 });
-                
-                
+
+                //Delete button
+                Button deleteBtn = new Button();
+                deleteBtn.setText("Delete");
+                deleteBtn.setPrefSize(100, 30);
+                deleteBtn.setStyle("-fx-font-size: 1em; ");
+                deleteBtn.setLayoutX(515);
+                deleteBtn.setLayoutY(525);
+                deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent e) {
+                        for (Table currentTable : tableList) {
+                            if (currentTable == table.getSelectionModel()
+                                    .getSelectedItem()) {
+                                //Create popup used for error display
+                                Stage errorDialog = new Stage();
+                                errorDialog.initModality(Modality.APPLICATION_MODAL);
+                                errorDialog.initOwner(primaryStage);
+                                errorDialog.setTitle("ERROR");
+                                VBox dialogVbox = new VBox(20);
+                                Scene dialogScene = new Scene(dialogVbox, 300, 50);
+                                errorDialog.setScene(dialogScene);
+                                Text errorText = new Text();
+                                errorText.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
+
+                                //Check if lease present
+                                if (currentTable.getLeaseNumber().equals("N/A")) {
+                                    errorText.setText("No lease to delete.");
+                                    errorText.setTextAlignment(TextAlignment.CENTER);
+                                    dialogVbox.getChildren().add(errorText);
+                                    dialogVbox.setAlignment(Pos.CENTER);
+                                    errorDialog.show();
+                                } else {
+                                    //Remove lease from system 
+                                    for (Halls currentHall : hallList) {
+                                        for (Room currentRoom : roomList) {
+                                            if ((hallNameArea.getText().equals(currentHall.getHallName()))
+                                                    && (currentRoom.getRoomNumber() == Integer.parseInt(roomNumberArea.getText()))) {
+                                                currentRoom.setOccupancy("Unoccupied");
+                                                for (Lease currentLease : leaseList) {
+                                                    if (leaseNumberArea.getText().equals(Integer.toString(currentLease.getLeaseNumber()))) {                                                        
+                                                        leaseList.remove(currentLease);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    try {
+                                        saveFileData();
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(AccommodationApplication.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                    
+                                    //Change data in Table Class
+                                    currentTable.setLeaseNumber("N/A");
+                                    currentTable.setLeaseDuration("N/A");
+                                    currentTable.setOccupancy("Unoccupied");
+                                    currentTable.setStudentName("N/A");
+                                    table.refresh();
+                                }
+                            }
+                        }
+                    }
+                });
+
                 //Back button
                 Button backBtn = new Button();
                 backBtn.setText("Back");
                 backBtn.setPrefSize(100, 30);
                 backBtn.setStyle("-fx-font-size: 1em; ");
                 backBtn.setLayoutX(5);
-                backBtn.setLayoutY(525);                
-                
+                backBtn.setLayoutY(525);
+
                 //Back button handling
-                backBtn.setOnAction(new EventHandler<ActionEvent>() {            
+                backBtn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         managerStage.close();
                         primaryStage.show();
                     }
-                });    
-                
+                });
+
                 //Create pane and add objects depending on scene
                 Pane root = new Pane();
                 root.getChildren().add(updateBtn);
+                root.getChildren().add(deleteBtn);
                 root.getChildren().add(backBtn);
-                root.getChildren().addAll(tableVbox);                
+                root.getChildren().addAll(tableVbox);
                 root.getChildren().addAll(hallNameLabel, //Labels
-                            roomNumberLabel,
-                            occupancyLabel,
-                            leaseNumberLabel,
-                            subLeaseNumLabel,
-                            leaseDurationLabel,
-                            subLeaseDurLabel,
-                            studentNameLabel,
-                            cleanStatusLabel
-                        );
+                        roomNumberLabel,
+                        occupancyLabel,
+                        leaseNumberLabel,
+                        subLeaseNumLabel,
+                        leaseDurationLabel,
+                        subLeaseDurLabel,
+                        studentNameLabel,
+                        cleanStatusLabel
+                );
                 root.getChildren().addAll(hallNameArea, //Text areas & Combos
-                            roomNumberArea,
-                            occupancyCombo,
-                            leaseNumberArea,
-                            leaseDurationArea,
-                            studentNameCombo,
-                            cleanStatusArea
-                        );                
-                        
+                        roomNumberArea,
+                        occupancyCombo,
+                        leaseNumberArea,
+                        leaseDurationArea,
+                        studentNameCombo,
+                        cleanStatusArea
+                );
+
                 //Set scene dimensions and title
-                Scene scene = new Scene(root, 725, 560);        
+                Scene scene = new Scene(root, 725, 560);
                 managerStage.setTitle("Manager View - Accommodation System");
 
                 //Set scene to stage and show
                 managerStage.setScene(scene);
                 managerStage.show();
             }
-        });           
-        
-        /*** WARDEN Stage Handling ***/
-        wardenBtn.setOnAction(new EventHandler<ActionEvent>() {            
+        }
+        );
+
+        /**
+         * * WARDEN Stage Handling **
+         */
+        wardenBtn.setOnAction(
+                new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {
-                
-            }
-        });              
-        
-        /*** ALL Stage Handling ***/
-        allBtn.setOnAction(new EventHandler<ActionEvent>() {            
-            @Override
-            public void handle(ActionEvent event) {
-                
+            public void handle(ActionEvent event
+            ) {
+
             }
         });
-        
+
+        /**
+         * * ALL Stage Handling **
+         */
+        allBtn.setOnAction(
+                new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event
+            ) {
+
+            }
+        });
+
         //Create pane and add objects depending on scene
         Pane root = new Pane();
-        root.getChildren().add(managerBtn);
-        root.getChildren().add(wardenBtn);
-        root.getChildren().add(allBtn);
-        root.getChildren().add(warningLabel);
-        root.getChildren().add(mainText);
-        
+
+        root.getChildren()
+                .add(managerBtn);
+        root.getChildren()
+                .add(wardenBtn);
+        root.getChildren()
+                .add(allBtn);
+        root.getChildren()
+                .add(warningLabel);
+        root.getChildren()
+                .add(mainText);
+
         //Set scene dimensions and title
-        Scene scene = new Scene(root, 600, 350);        
-        primaryStage.setTitle("UWE Bristol - Accommodation System");
-        
+        Scene scene = new Scene(root, 600, 350);
+
+        primaryStage.setTitle(
+                "UWE Bristol - Accommodation System");
+
         //Set scene to stage and show
         primaryStage.setScene(scene);
+
         primaryStage.show();
-    }   
-    
+    }
+
     public void getFileData() throws IOException {
         String hallsFile = "./resources/data/halls.csv";
         String roomsFile = "./resources/data/rooms.csv";
@@ -518,7 +601,7 @@ public class AccommodationApplication extends Application {
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ",";
-        
+
         //Get HALLS data
         try {
             br = new BufferedReader(new FileReader(hallsFile));
@@ -526,13 +609,13 @@ public class AccommodationApplication extends Application {
                 String[] data = line.split(cvsSplitBy);
                 int hallID = Integer.parseInt(data[1]);
                 hallList.add(new Halls(data[0], hallID, data[2],
-                        data[3], data[4]));                
+                        data[3], data[4]));
             }
         } catch (FileNotFoundException e) {
             System.out.println("ERROR -- File containing Halls data missing");
             System.exit(1);
         }
-        
+
         //Get ROOMS data
         try {
             br = new BufferedReader(new FileReader(roomsFile));
@@ -541,7 +624,8 @@ public class AccommodationApplication extends Application {
                 int roomNumber = Integer.parseInt(data[0]);
                 double monthlyRent = Double.parseDouble(data[1]);
                 int hallID = Integer.parseInt(data[2]);
-                roomList.add(new Room(roomNumber, monthlyRent, hallID, data[3]));
+                roomList.add(new Room(roomNumber, monthlyRent, hallID,
+                        data[3], data[4]));
             }
         } catch (FileNotFoundException e) {
             System.out.println("ERROR -- File containing Rooms data missing");
@@ -560,7 +644,7 @@ public class AccommodationApplication extends Application {
             System.out.println("ERROR -- File containing Students data missing");
             System.exit(1);
         }
-        
+
         //Get LEASES data
         try {
             br = new BufferedReader(new FileReader(leasesFile));
@@ -572,14 +656,14 @@ public class AccommodationApplication extends Application {
                 int roomNumber = Integer.parseInt(data[3]);
                 int studentID = Integer.parseInt(data[4]);
                 leaseList.add(new Lease(leaseNumber, leaseDuration, hallID,
-                    roomNumber, studentID));
+                        roomNumber, studentID));
             }
         } catch (FileNotFoundException e) {
             System.out.println("ERROR -- File containing Leases data missing");
             System.exit(1);
         }
     }
-    
+
     public void saveFileData() throws IOException {
         String hallsFile = "./resources/data/halls.csv";
         String roomsFile = "./resources/data/rooms.csv";
@@ -589,7 +673,7 @@ public class AccommodationApplication extends Application {
         FileWriter roomWriter = new FileWriter(roomsFile);
         FileWriter studentWriter = new FileWriter(studentsFile);
         FileWriter leaseWriter = new FileWriter(leasesFile);
-        
+
         //Save HALLS data
         for (Halls hall : hallList) {
             //List of data to be saved
@@ -599,68 +683,69 @@ public class AccommodationApplication extends Application {
             hallData.add(hall.getHallAddress());
             hallData.add(hall.getHallPostCode());
             hallData.add(hall.getPhoneNumber());
-            
+
             //Write to file
             String newLine = hallData.stream().collect(Collectors.joining(","));
             hallWriter.write(newLine);
             hallWriter.write(System.getProperty("line.separator"));
         }
         hallWriter.close();
-        
+
         //Save ROOMS data
         for (Room room : roomList) {
             //List of data to be saved
             List<String> roomData = new ArrayList<>();
             roomData.add(Integer.toString(room.getRoomNumber()));
-            roomData.add(Double.toString(room.getMonthlyRent()));            
-            roomData.add(Integer.toString(room.getHallID()));            
+            roomData.add(Double.toString(room.getMonthlyRent()));
+            roomData.add(Integer.toString(room.getHallID()));
             roomData.add(room.getCleanStatus());
-            
+            roomData.add(room.getOccupancy());
+
             //Write to file
             String newLine = roomData.stream().collect(Collectors.joining(","));
             roomWriter.write(newLine);
-            roomWriter.write(System.getProperty("line.separator"));            
+            roomWriter.write(System.getProperty("line.separator"));
         }
         roomWriter.close();
-        
+
         //Save STUDENTS data
         for (Student student : studentList) {
             //List of data to be saved
             List<String> studentData = new ArrayList<>();
             studentData.add(student.getStudentName());
             studentData.add(Integer.toString(student.getStudentID()));
-            
+
             //Write to file
             String newLine = studentData.stream().collect(Collectors.joining(","));
             studentWriter.write(newLine);
             studentWriter.write(System.getProperty("line.separator"));
         }
         studentWriter.close();
-        
+
         //Save LEASES data
         for (Lease lease : leaseList) {
             //List of data to be saved
             List<String> leaseData = new ArrayList<>();
             leaseData.add(Integer.toString(lease.getLeaseNumber()));
-            leaseData.add(Integer.toString(lease.getLeaseDuration()));            
+            leaseData.add(Integer.toString(lease.getLeaseDuration()));
             leaseData.add(Integer.toString(lease.getHallID()));
-            leaseData.add(Integer.toString(lease.getRoomNumber()));            
-            leaseData.add(Integer.toString(lease.getStudentID()));            
-            
+            leaseData.add(Integer.toString(lease.getRoomNumber()));
+            leaseData.add(Integer.toString(lease.getStudentID()));
+
             //Write to file
             String newLine = leaseData.stream().collect(Collectors.joining(","));
             leaseWriter.write(newLine);
             leaseWriter.write(System.getProperty("line.separator"));
         }
-        leaseWriter.close();    
+        leaseWriter.close();
     }
-    
-    public void getTableData() {        
+
+    public void getTableData() {
         //Variables
         String hallName, occupancy, cleanStatus, leaseNumber = "N/A",
                 studentName = "N/A", leaseDuration = "N/A";
         int roomNumber;
-        
+
         //Load data into table class & list
         for (Room room : roomList) {
             for (Halls hall : hallList) {
@@ -672,18 +757,18 @@ public class AccommodationApplication extends Application {
                     cleanStatus = room.getCleanStatus();
                     //Find a lease that may exist for this room
                     for (Lease lease : leaseList) {
-                        if ((lease.getRoomNumber() ==
-                                room.getRoomNumber()) &&
-                                (lease.getHallID() ==
-                                hall.getHallID())) {
-                            leaseNumber =
-                                    Integer.toString(lease.getLeaseNumber());
-                            leaseDuration =
-                                    Integer.toString(lease.getLeaseDuration());
+                        if ((lease.getRoomNumber()
+                                == room.getRoomNumber())
+                                && (lease.getHallID()
+                                == hall.getHallID())) {
+                            leaseNumber
+                                    = Integer.toString(lease.getLeaseNumber());
+                            leaseDuration
+                                    = Integer.toString(lease.getLeaseDuration());
                             //Find the student associated with the lease
                             for (Student student : studentList) {
-                                if (student.getStudentID() ==
-                                        lease.getStudentID()) {
+                                if (student.getStudentID()
+                                        == lease.getStudentID()) {
                                     studentName = student.getStudentName();
                                     break;
                                 }
@@ -701,6 +786,6 @@ public class AccommodationApplication extends Application {
                     break;
                 }
             }
-        }   
-    }   
+        }
+    }
 }
