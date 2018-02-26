@@ -465,7 +465,7 @@ public class AccommodationApplication extends Application {
                                                     && (currentRoom.getRoomNumber() == Integer.parseInt(roomNumberArea.getText()))) {
                                                 currentRoom.setOccupancy("Unoccupied");
                                                 for (Lease currentLease : leaseList) {
-                                                    if (leaseNumberArea.getText().equals(Integer.toString(currentLease.getLeaseNumber()))) {                                                        
+                                                    if (leaseNumberArea.getText().equals(Integer.toString(currentLease.getLeaseNumber()))) {
                                                         leaseList.remove(currentLease);
                                                     }
                                                 }
@@ -477,7 +477,7 @@ public class AccommodationApplication extends Application {
                                     } catch (IOException ex) {
                                         Logger.getLogger(AccommodationApplication.class.getName()).log(Level.SEVERE, null, ex);
                                     }
-                                    
+
                                     //Change data in Table Class
                                     currentTable.setLeaseNumber("N/A");
                                     currentTable.setLeaseDuration("N/A");
@@ -551,9 +551,277 @@ public class AccommodationApplication extends Application {
             @Override
             public void handle(ActionEvent event
             ) {
+                //Switch stage
+                primaryStage.close();
+                Stage wardenStage = new Stage();
+
+                //Text Area Labels
+                Label hallNameLabel = new Label("Hall Name:");
+                Label roomNumberLabel = new Label("Room Number:");
+                Label occupancyLabel = new Label("Occupancy:");
+                Label leaseNumberLabel = new Label("Lease Number:");
+                Label leaseDurationLabel = new Label("Lease Duration:");
+                Label studentNameLabel = new Label("Student Name:");
+                Label cleanStatusLabel = new Label("Clean Status:");
+                hallNameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                hallNameLabel.setLayoutX(50);
+                hallNameLabel.setLayoutY(337.5);
+                roomNumberLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                roomNumberLabel.setLayoutX(15);
+                roomNumberLabel.setLayoutY(382.5);
+                occupancyLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                occupancyLabel.setLayoutX(442.5);
+                occupancyLabel.setLayoutY(427.5);
+                leaseNumberLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                leaseNumberLabel.setLayoutX(405);
+                leaseNumberLabel.setLayoutY(337.5);
+                leaseDurationLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                leaseDurationLabel.setLayoutX(240);
+                leaseDurationLabel.setLayoutY(490);
+                studentNameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                studentNameLabel.setLayoutX(405);
+                studentNameLabel.setLayoutY(382.5);
+                cleanStatusLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                cleanStatusLabel.setLayoutX(30);
+                cleanStatusLabel.setLayoutY(427.5);
+
+                //Text Areas & Combo Boxes
+                TextArea hallNameArea = new TextArea();
+                TextArea roomNumberArea = new TextArea();
+                TextArea occupancyArea = new TextArea();
+                TextArea leaseNumberArea = new TextArea();
+                TextArea leaseDurationArea = new TextArea();
+                TextArea studentNameArea = new TextArea();
+                ComboBox cleanStatusCombo = new ComboBox();
+                hallNameArea.setEditable(false);
+                hallNameArea.setPrefSize(140, 40);
+                hallNameArea.setLayoutX(150);
+                hallNameArea.setLayoutY(330);
+                hallNameArea.setStyle("-fx-control-inner-background: #D6D6D6");
+                roomNumberArea.setEditable(false);
+                roomNumberArea.setPrefSize(140, 40);
+                roomNumberArea.setLayoutX(150);
+                roomNumberArea.setLayoutY(375);
+                roomNumberArea.setStyle("-fx-control-inner-background: #D6D6D6");
+                occupancyArea.setEditable(false);
+                occupancyArea.setPrefSize(140, 40);
+                occupancyArea.setLayoutX(550);
+                occupancyArea.setLayoutY(420);
+                occupancyArea.setStyle("-fx-control-inner-background: #D6D6D6");
+                leaseNumberArea.setEditable(false);
+                leaseNumberArea.setPrefSize(140, 40);
+                leaseNumberArea.setLayoutX(550);
+                leaseNumberArea.setLayoutY(330);
+                leaseNumberArea.setStyle("-fx-control-inner-background: #D6D6D6");
+                leaseDurationArea.setEditable(false);
+                leaseDurationArea.setPrefSize(140, 40);
+                leaseDurationArea.setLayoutX(382.5);
+                leaseDurationArea.setLayoutY(480);
+                leaseDurationArea.setStyle("-fx-control-inner-background: #D6D6D6");
+                studentNameArea.setEditable(false);
+                studentNameArea.setPrefSize(140, 40);
+                studentNameArea.setLayoutX(550);
+                studentNameArea.setLayoutY(375);
+                studentNameArea.setStyle("-fx-control-inner-background: #D6D6D6");
+                cleanStatusCombo.setEditable(true);
+                cleanStatusCombo.setPrefSize(140, 40);
+                cleanStatusCombo.setLayoutX(150);
+                cleanStatusCombo.setLayoutY(420);
+                cleanStatusCombo.getItems().addAll(
+                        "Clean",
+                        "Dirty",
+                        "Offline"
+                );
+
+                //Table label
+                Label tableLabel = new Label("Room/lease information:");
+                tableLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+
+                //Create table columns and set fill data
+                TableView table = new TableView();
+                table.setEditable(true);
+                TableColumn hallNameCol = new TableColumn("Hall Name");
+                hallNameCol.setCellValueFactory(
+                        new PropertyValueFactory<Table, String>("hallName"));
+                TableColumn roomNumCol = new TableColumn("Room Number");
+                roomNumCol.setCellValueFactory(
+                        new PropertyValueFactory<Table, Integer>("roomNumber"));
+                TableColumn occupancyCol = new TableColumn("Occupancy Status");
+                occupancyCol.setCellValueFactory(
+                        new PropertyValueFactory<Table, String>("occupancy"));
+                TableColumn leaseNumCol = new TableColumn("Lease Number");
+                leaseNumCol.setCellValueFactory(
+                        new PropertyValueFactory<Table, String>("leaseNumber"));
+                TableColumn leaseDurCol = new TableColumn("Lease Duration");
+                leaseDurCol.setCellValueFactory(
+                        new PropertyValueFactory<Table, String>("leaseDuration"));
+                TableColumn studentNameCol = new TableColumn("Student Name");
+                studentNameCol.setCellValueFactory(
+                        new PropertyValueFactory<Table, String>("studentName"));
+                TableColumn cleaningCol = new TableColumn("Cleaning Status");
+                cleaningCol.setCellValueFactory(
+                        new PropertyValueFactory<Table, String>("cleanStatus"));
+                table.setItems(tableList);
+                table.getColumns().addAll(hallNameCol, roomNumCol,
+                        occupancyCol, leaseNumCol, leaseDurCol,
+                        studentNameCol, cleaningCol);
+
+                //Detect row selection, fill text areas with corresponding data
+                table.setOnMousePressed(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        for (Table currentTable : tableList) {
+                            if (currentTable
+                                    == table.getSelectionModel()
+                                            .getSelectedItem()) {
+                                hallNameArea.setText(
+                                        currentTable.getHallName());
+                                roomNumberArea.setText(Integer.toString(
+                                        currentTable.getRoomNumber()));
+                                occupancyArea.setText(
+                                        currentTable.getOccupancy());
+                                leaseNumberArea.setText(
+                                        currentTable.getLeaseNumber());
+                                leaseDurationArea.setText(
+                                        currentTable.getLeaseDuration()
+                                                .replace(" Months", ""));
+                                studentNameArea.setText(
+                                        currentTable.getStudentName());
+                                cleanStatusCombo.getSelectionModel().select(
+                                        currentTable.getCleanStatus());
+                                break;
+                            }
+                        }
+                    }
+                });
+
+                //Form table                
+                VBox tableVbox = new VBox();
+                tableVbox.setSpacing(5);
+                tableVbox.getChildren().addAll(tableLabel, table);
+                tableVbox.setLayoutX(20);
+                tableVbox.setLayoutY(20);
+                tableVbox.setPrefSize(685, 300);
+
+                //Update button
+                Button updateBtn = new Button();
+                updateBtn.setText("Update");
+                updateBtn.setPrefSize(100, 30);
+                updateBtn.setStyle("-fx-font-size: 1em; ");
+                updateBtn.setLayoutX(620);
+                updateBtn.setLayoutY(525);
+                //Change data in Table & relevant classes when button pressed                 
+                updateBtn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent e) {
+                        for (Table currentTable : tableList) {
+                            if (currentTable == table.getSelectionModel()
+                                    .getSelectedItem()) {
+                                //Create popup used for error display
+                                Stage errorDialog = new Stage();
+                                errorDialog.initModality(Modality.APPLICATION_MODAL);
+                                errorDialog.initOwner(primaryStage);
+                                errorDialog.setTitle("ERROR");
+                                VBox dialogVbox = new VBox(20);
+                                Scene dialogScene = new Scene(dialogVbox, 300, 50);
+                                errorDialog.setScene(dialogScene);
+                                Text errorText = new Text();
+                                errorText.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
+
+                                //Update clean status
+                                try {
+                                    //Check if room is occupied (cant be offline)
+                                    if (leaseNumberArea.getText().equals("N/A")) {
+                                    } else {
+                                        if (cleanStatusCombo.getValue().toString().equals("Offline")) {
+                                            throw new NoSuchMethodException();
+                                        }
+                                    }
+                                    //Change clean status in Room class                                               
+                                    int roomNumber = currentTable.getRoomNumber();
+                                    int hallID = 0;
+                                    for (Halls currentHall : hallList) {
+                                        if (currentTable.getHallName().equals(currentHall.getHallName())) {
+                                            hallID = currentHall.getHallID();
+                                        }
+                                    }
+                                    for (Room currentRoom : roomList) {
+                                        if ((currentRoom.getHallID() == hallID) && (currentRoom.getRoomNumber() == roomNumber)) {
+                                            currentRoom.setCleanStatus(cleanStatusCombo.getValue().toString());
+                                            break;
+                                        }
+                                    }
+                                    //Save to file
+                                    try {
+                                        saveFileData();
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(AccommodationApplication.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                    //Change clean status in Table Class
+                                    currentTable.setCleanStatus(cleanStatusCombo.getValue().toString());
+                                    table.refresh();
+
+                                } catch (NoSuchMethodException offline) {
+                                    errorText.setText("An occupied room cannot\nbe set to Offline.");
+                                    errorText.setTextAlignment(TextAlignment.CENTER);
+                                    dialogVbox.getChildren().add(errorText);
+                                    dialogVbox.setAlignment(Pos.CENTER);
+                                    errorDialog.show();
+                                }
+                            }
+                        }
+                    }
+                });
+
+                //Back button
+                Button backBtn = new Button();
+                backBtn.setText("Back");
+                backBtn.setPrefSize(100, 30);
+                backBtn.setStyle("-fx-font-size: 1em; ");
+                backBtn.setLayoutX(5);
+                backBtn.setLayoutY(525);
+                //Back button handling
+                backBtn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        wardenStage.close();
+                        primaryStage.show();
+                    }
+                });
+
+                //Create pane and add objects depending on scene
+                Pane root = new Pane();
+                root.getChildren().add(updateBtn);
+                root.getChildren().add(backBtn);
+                root.getChildren().addAll(tableVbox);
+                root.getChildren().addAll(hallNameLabel, //Labels
+                        roomNumberLabel,
+                        occupancyLabel,
+                        leaseNumberLabel,
+                        leaseDurationLabel,
+                        studentNameLabel,
+                        cleanStatusLabel
+                );
+                root.getChildren().addAll(hallNameArea, //Text areas & Combos
+                        roomNumberArea,
+                        occupancyArea,
+                        leaseNumberArea,
+                        leaseDurationArea,
+                        studentNameArea,
+                        cleanStatusCombo
+                );
+
+                //Set scene dimensions and title
+                Scene scene = new Scene(root, 725, 560);
+                wardenStage.setTitle("Warden View - Accommodation System");
+
+                //Set scene to stage and show
+                wardenStage.setScene(scene);
+                wardenStage.show();
 
             }
-        });
+        }
+        );
 
         /**
          * * ALL Stage Handling **
@@ -685,8 +953,8 @@ public class AccommodationApplication extends Application {
             hallData.add(hall.getPhoneNumber());
 
             //Write to file
-            String newLine = hallData.stream().collect(Collectors.joining(","));
-            hallWriter.write(newLine);
+            String hallLine = hallData.stream().collect(Collectors.joining(","));
+            hallWriter.write(hallLine);
             hallWriter.write(System.getProperty("line.separator"));
         }
         hallWriter.close();
@@ -702,8 +970,8 @@ public class AccommodationApplication extends Application {
             roomData.add(room.getOccupancy());
 
             //Write to file
-            String newLine = roomData.stream().collect(Collectors.joining(","));
-            roomWriter.write(newLine);
+            String roomLine = roomData.stream().collect(Collectors.joining(","));
+            roomWriter.write(roomLine);
             roomWriter.write(System.getProperty("line.separator"));
         }
         roomWriter.close();
@@ -716,8 +984,8 @@ public class AccommodationApplication extends Application {
             studentData.add(Integer.toString(student.getStudentID()));
 
             //Write to file
-            String newLine = studentData.stream().collect(Collectors.joining(","));
-            studentWriter.write(newLine);
+            String studentLine = studentData.stream().collect(Collectors.joining(","));
+            studentWriter.write(studentLine);
             studentWriter.write(System.getProperty("line.separator"));
         }
         studentWriter.close();
@@ -733,8 +1001,8 @@ public class AccommodationApplication extends Application {
             leaseData.add(Integer.toString(lease.getStudentID()));
 
             //Write to file
-            String newLine = leaseData.stream().collect(Collectors.joining(","));
-            leaseWriter.write(newLine);
+            String leaseLine = leaseData.stream().collect(Collectors.joining(","));
+            leaseWriter.write(leaseLine);
             leaseWriter.write(System.getProperty("line.separator"));
         }
         leaseWriter.close();
