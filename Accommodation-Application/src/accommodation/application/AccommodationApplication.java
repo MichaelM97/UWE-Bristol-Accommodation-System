@@ -717,29 +717,57 @@ public class AccommodationApplication extends Application {
                         for (Table currentTable : tableList) {
                             if (currentTable == table.getSelectionModel()
                                     .getSelectedItem()) {
-                                //Change data in Room class                                               
-                                int roomNumber = currentTable.getRoomNumber();
-                                int hallID = 0;
-                                for (Halls currentHall : hallList) {
-                                    if (currentTable.getHallName().equals(currentHall.getHallName())) {
-                                        hallID = currentHall.getHallID();
-                                    }
-                                }
-                                for (Room currentRoom : roomList) {
-                                    if ((currentRoom.getHallID() == hallID) && (currentRoom.getRoomNumber() == roomNumber)) {
-                                        currentRoom.setCleanStatus(cleanStatusCombo.getValue().toString());
-                                        break;
-                                    }
-                                }
+                                //Create popup used for error display
+                                Stage errorDialog = new Stage();
+                                errorDialog.initModality(Modality.APPLICATION_MODAL);
+                                errorDialog.initOwner(primaryStage);
+                                errorDialog.setTitle("ERROR");
+                                VBox dialogVbox = new VBox(20);
+                                Scene dialogScene = new Scene(dialogVbox, 300, 50);
+                                errorDialog.setScene(dialogScene);
+                                Text errorText = new Text();
+                                errorText.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
+
+                                //Update clean status
                                 try {
-                                    saveFileData();
-                                } catch (IOException ex) {
-                                    Logger.getLogger(AccommodationApplication.class.getName()).log(Level.SEVERE, null, ex);
+                                    //Check if room is occupied (cant be offline)
+                                    if (leaseNumberArea.getText().equals("N/A")) {
+                                    } else {
+                                        if (cleanStatusCombo.getValue().toString().equals("Offline")) {
+                                            throw new NoSuchMethodException();
+                                        }
+                                    }
+                                    //Change clean status in Room class                                               
+                                    int roomNumber = currentTable.getRoomNumber();
+                                    int hallID = 0;
+                                    for (Halls currentHall : hallList) {
+                                        if (currentTable.getHallName().equals(currentHall.getHallName())) {
+                                            hallID = currentHall.getHallID();
+                                        }
+                                    }
+                                    for (Room currentRoom : roomList) {
+                                        if ((currentRoom.getHallID() == hallID) && (currentRoom.getRoomNumber() == roomNumber)) {
+                                            currentRoom.setCleanStatus(cleanStatusCombo.getValue().toString());
+                                            break;
+                                        }
+                                    }
+                                    //Save to file
+                                    try {
+                                        saveFileData();
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(AccommodationApplication.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                    //Change clean status in Table Class
+                                    currentTable.setCleanStatus(cleanStatusCombo.getValue().toString());
+                                    table.refresh();
+
+                                } catch (NoSuchMethodException offline) {
+                                    errorText.setText("An occupied room cannot\nbe set to Offline.");
+                                    errorText.setTextAlignment(TextAlignment.CENTER);
+                                    dialogVbox.getChildren().add(errorText);
+                                    dialogVbox.setAlignment(Pos.CENTER);
+                                    errorDialog.show();
                                 }
-                                //Change data in Table Class
-                                currentTable.setCleanStatus(cleanStatusCombo.getValue().toString());
-                                table.refresh();
-                                break;
                             }
                         }
                     }
