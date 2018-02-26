@@ -17,16 +17,23 @@ public class Table {
     private String occupancy;
     private String cleanStatus;
     private String leaseNumber;
+    private String leaseDuration;
     private String studentName;
 
     public Table(String hallName, int roomNumber, String occupancy,
-            String cleanStatus, String leaseNumber, String studentName) {
+            String cleanStatus, String leaseNumber,
+            String leaseDuration, String studentName) {
         this.hallName = hallName;
         this.roomNumber = roomNumber;
         this.occupancy = occupancy;
         this.cleanStatus = cleanStatus;
-        this.leaseNumber = leaseNumber;
-        this.studentName = studentName;        
+        this.leaseNumber = leaseNumber;        
+        this.studentName = studentName;
+        if (leaseDuration.equals("N/A")) {
+            this.leaseDuration = leaseDuration;
+        } else {
+            this.leaseDuration = leaseDuration + " Months";
+        }        
     }
 
     /* -Class getters- */ 
@@ -49,6 +56,10 @@ public class Table {
     public String getLeaseNumber() {
         return leaseNumber;
     }
+    
+    public String getLeaseDuration() {
+        return leaseDuration;
+    }
 
     public String getStudentName() {
         return studentName;
@@ -61,6 +72,10 @@ public class Table {
         
     public void setLeaseNumber(String leaseNumber) {
         this.leaseNumber = leaseNumber;
+    }  
+    
+    public void setLeaseDuration(String leaseDuration) {
+        this.leaseDuration = leaseDuration + " Months";
     }    
     
     public void setStudentName(String studentName) {
