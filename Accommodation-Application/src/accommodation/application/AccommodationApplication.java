@@ -20,6 +20,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -37,6 +38,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -255,16 +258,35 @@ public class AccommodationApplication extends Application {
                         for (Table currentTable : tableList) {
                             if(currentTable == table.getSelectionModel()
                                     .getSelectedItem()) {
+                                //Create popup used for error display
+                                Stage errorDialog = new Stage();
+                                errorDialog.initModality(Modality.APPLICATION_MODAL);
+                                errorDialog.initOwner(primaryStage);
+                                errorDialog.setTitle("ERROR");
+                                VBox dialogVbox = new VBox(20);
+                                Scene dialogScene = new Scene(dialogVbox, 300, 50);
+                                errorDialog.setScene(dialogScene);   
+                                Text errorText = new Text();
+                                errorText.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                                
                                 try {
                                     //Check if lease number valid int
+                                    errorText.setText("Invalid lease number.");
                                     int leaseNumInt = Integer.parseInt(
-                                            leaseNumberArea.getText());
-                                    
+                                            leaseNumberArea.getText());                                  
+                                    dialogVbox.getChildren().clear();
                                     //Check if student name in use
                                     for (Table tableStudentCheck : tableList) {
                                         if (studentNameCombo.getValue().toString().equalsIgnoreCase(tableStudentCheck.getStudentName())) {
-                                            throw new IOException();
-                                        }
+                                            errorText.setText("Student already has a lease.");
+                                            throw new NumberFormatException();
+                                        } 
+                                    }
+                                    
+                                    //Check if room clean status
+                                    if (cleanStatusArea.getText().equals("Offline")) {
+                                        errorText.setText("Room is offline.");
+                                        throw new NumberFormatException();
                                     }
                                     
                                     //Change data in Table Class
@@ -298,12 +320,11 @@ public class AccommodationApplication extends Application {
                                         }
                                     }
                                     
-                                } catch (NumberFormatException eNum) {
-                                    leaseNumberArea.setText("INVALID INPUT");
-                                    table.refresh();
-                                } catch (IOException eName) {                                
-                                    studentNameCombo.getSelectionModel().select("STUDENT HAS EXISTING LEASE");
-                                    table.refresh();
+                                } catch (NumberFormatException eNum) {                                    
+                                    errorText.setTextAlignment(TextAlignment.CENTER);
+                                    dialogVbox.getChildren().add(errorText);                                    
+                                    dialogVbox.setAlignment(Pos.CENTER);
+                                    errorDialog.show();
                                 }
                                 break;
                             } 
