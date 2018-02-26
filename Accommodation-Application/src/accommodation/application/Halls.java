@@ -6,6 +6,8 @@
 package accommodation.application;
 
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -17,14 +19,16 @@ public class Halls {
     private String hallName;
     private int hallID;
     private String hallAddress;
-    private String phoneNumber;
+    private String hallPostCode;
+    private String phoneNumber;   
     
     //Class Constructor
     public Halls(String hallName, int hallID, String address,
-            String phoneNumber) {
+            String hallPostCode, String phoneNumber) {
         this.hallName = hallName;
         this.hallID = hallID;
         this.hallAddress = address;
+        this.hallPostCode = hallPostCode;
         this.phoneNumber = phoneNumber;
     }
     
@@ -39,6 +43,10 @@ public class Halls {
     
     public String getHallAddress() {
         return hallAddress;
+    }
+    
+    public String getHallPostCode() {
+        return hallPostCode;
     }
     
     public String getPhoneNumber() {

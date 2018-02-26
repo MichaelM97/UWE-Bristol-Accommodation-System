@@ -29,4 +29,9 @@ public class Student {
     public int getStudentID() {
         return studentID;
     }   
+    
+    /* -Class Setters- */ 
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
 }

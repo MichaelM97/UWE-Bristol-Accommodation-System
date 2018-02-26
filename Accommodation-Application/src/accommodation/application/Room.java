@@ -5,6 +5,7 @@
  */
 package accommodation.application;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +19,11 @@ public class Room {
     private double monthlyRent;
     private int hallID;
     private String cleanStatus;
+    private String occupancy;
+    private Lease lease;
+    private Halls hall;
+    private ArrayList<Lease> leases;
+    private ArrayList<Halls> halls;
     
     //Class Constructor
     public Room(int roomNumber, double monthlyRent, int hallID,
@@ -26,6 +32,12 @@ public class Room {
         this.monthlyRent = monthlyRent;
         this.hallID = hallID;
         this.cleanStatus = cleanStatus;
+        if(cleanStatus.equals("Offline")) {
+            this.occupancy = "Unoccupied";
+        }
+        else {
+            this.occupancy = "Occupied";
+        }
     }
     
     /* -Class getters- */    
@@ -41,8 +53,12 @@ public class Room {
         return hallID;
     }
     
-    public String cleanStatus() {
+    public String getCleanStatus() {
         return cleanStatus;
+    }
+    
+    public String getOccupancy() {
+        return occupancy;
     }
     
     /* -Class Setters- */
@@ -51,7 +67,11 @@ public class Room {
         this.monthlyRent = monthlyRent;
     }
     
-    public void setCleanStatus(String newCleanStatus){
-        this.cleanStatus = newCleanStatus;
+    public void setCleanStatus(String cleanStatus){
+        this.cleanStatus = cleanStatus;
+    }
+    
+    public void setOccupancy(String occupancy){
+        this.occupancy = occupancy;
     }
 }
