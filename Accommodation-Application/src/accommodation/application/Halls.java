@@ -5,10 +5,6 @@
  */
 package accommodation.application;
 
-import java.util.List;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 /**
  *
  * @author Michael McCormick (15012271)

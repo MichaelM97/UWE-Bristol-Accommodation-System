@@ -20,24 +20,15 @@ public class Room {
     private int hallID;
     private String cleanStatus;
     private String occupancy;
-    private Lease lease;
-    private Halls hall;
-    private ArrayList<Lease> leases;
-    private ArrayList<Halls> halls;
     
     //Class Constructor
     public Room(int roomNumber, double monthlyRent, int hallID,
-            String cleanStatus) {
+            String cleanStatus, String occupancy) {
         this.roomNumber = roomNumber;
         this.monthlyRent = monthlyRent;
         this.hallID = hallID;
         this.cleanStatus = cleanStatus;
-        if(cleanStatus.equals("Offline")) {
-            this.occupancy = "Unoccupied";
-        }
-        else {
-            this.occupancy = "Occupied";
-        }
+        this.occupancy = occupancy;
     }
     
     /* -Class getters- */    
