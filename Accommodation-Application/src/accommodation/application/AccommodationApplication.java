@@ -716,17 +716,19 @@ public class AccommodationApplication extends Application {
                     public void handle(ActionEvent e) {
                         for (Table currentTable : tableList) {
                             if (currentTable == table.getSelectionModel()
-                                    .getSelectedItem()) {                                
-                                //Change data in Room class                                  
+                                    .getSelectedItem()) {
+                                //Change data in Room class                                               
+                                int roomNumber = currentTable.getRoomNumber();
+                                int hallID = 0;
                                 for (Halls currentHall : hallList) {
-                                    for (Room currentRoom : roomList) {
-                                        if ((hallNameArea.getText().equals(currentHall.getHallName()))
-                                                && (roomNumberArea.getText().equals(Integer.toString(currentRoom.getRoomNumber())))) {
-                                            currentRoom.setCleanStatus(cleanStatusCombo.getValue().toString());
-                                            System.out.println(currentHall.getHallName());
-                                            System.out.println(currentRoom.getRoomNumber());
-                                            break;
-                                        }
+                                    if (currentTable.getHallName().equals(currentHall.getHallName())) {
+                                        hallID = currentHall.getHallID();
+                                    }
+                                }
+                                for (Room currentRoom : roomList) {
+                                    if ((currentRoom.getHallID() == hallID) && (currentRoom.getRoomNumber() == roomNumber)) {
+                                        currentRoom.setCleanStatus(cleanStatusCombo.getValue().toString());
+                                        break;
                                     }
                                 }
                                 try {
@@ -737,6 +739,7 @@ public class AccommodationApplication extends Application {
                                 //Change data in Table Class
                                 currentTable.setCleanStatus(cleanStatusCombo.getValue().toString());
                                 table.refresh();
+                                break;
                             }
                         }
                     }
@@ -937,7 +940,7 @@ public class AccommodationApplication extends Application {
             roomData.add(Integer.toString(room.getHallID()));
             roomData.add(room.getCleanStatus());
             roomData.add(room.getOccupancy());
-            
+
             //Write to file
             String roomLine = roomData.stream().collect(Collectors.joining(","));
             roomWriter.write(roomLine);
