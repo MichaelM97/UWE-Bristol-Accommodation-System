@@ -5,9 +5,7 @@
  */
 package accommodation.application;
 
-import java.awt.Image;
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -22,7 +20,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -31,10 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -1008,8 +1002,15 @@ public class AccommodationApplication extends Application {
                                                     break;
                                                 }
                                             }
+                                            if (newHallIdInt < 1
+                                                    || newHallIdInt > 999999) {
+                                                errorText.setText("Hall ID must be\nbetween 1 - 999,999.");
+                                                errorText.setTextAlignment(TextAlignment.CENTER);
+                                                dialogVbox.getChildren().add(errorText);
+                                                dialogVbox.setAlignment(Pos.CENTER);
+                                                errorDialog.show();                                            
                                             //Add new data
-                                            if (alreadyExists == false) {
+                                            } else if (alreadyExists == false) {
                                                 hallList.add(new Halls(newHallName,
                                                         newHallIdInt,
                                                         newAddress,
@@ -1273,8 +1274,16 @@ public class AccommodationApplication extends Application {
                                                         roomExists = true;
                                                         break;
                                                     }
+                                                    //Check if room number is in range
+                                                    if (newRoomNumInt < 1
+                                                            || newRoomNumInt > 999999) {
+                                                        errorText.setText("Room number must be\nbetween 1 - 999,999.");
+                                                        errorText.setTextAlignment(TextAlignment.CENTER);
+                                                        dialogVbox.getChildren().add(errorText);
+                                                        dialogVbox.setAlignment(Pos.CENTER);
+                                                        errorDialog.show();                                                    
                                                     //Add new data
-                                                    if (roomExists == false) {
+                                                    } else if (roomExists == false) {
                                                         roomList.add(new Room(newRoomNumInt,
                                                                 newMonthlyRentDouble,
                                                                 newHallIdInt,
@@ -1296,11 +1305,11 @@ public class AccommodationApplication extends Application {
                                             }
                                         } catch (NumberFormatException eNum) {
                                             if (validRoomNum == true) {
-                                                errorText.setText("Room number must be\na whole number.");
+                                                errorText.setText("Room number must be\na valid number.");
                                             } else if (validRent == true) {
-                                                errorText.setText("Monthly Rent must be\na decimal number.");
+                                                errorText.setText("Monthly Rent must b a\nvalid decimal number.");
                                             } else {
-                                                errorText.setText("Hall ID must be\na whole number.");
+                                                errorText.setText("Hall ID must be\na valid number.");
                                             }
                                             errorText.setTextAlignment(TextAlignment.CENTER);
                                             dialogVbox.getChildren().add(errorText);
@@ -1392,26 +1401,39 @@ public class AccommodationApplication extends Application {
                                 = FXCollections.observableArrayList(studentList);
 
                         //Text Area Labels
-                        Label studentNameLabel = new Label("Student Name");
+                        Label studentFirstNameLabel = new Label("Student First Name");
+                        Label studentSecondNameLabel = new Label("Student Second Name");
                         Label studentIdLabel = new Label("Student ID");
-                        studentNameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-                        studentNameLabel.setLayoutX(100);
-                        studentNameLabel.setLayoutY(300);
+                        Label studentIdSubLabel = new Label("(1 - 999,999)");
+                        studentFirstNameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                        studentFirstNameLabel.setLayoutX(60);
+                        studentFirstNameLabel.setLayoutY(300);
+                        studentSecondNameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                        studentSecondNameLabel.setLayoutX(242.5);
+                        studentSecondNameLabel.setLayoutY(300);
                         studentIdLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-                        studentIdLabel.setLayoutX(265);
-                        studentIdLabel.setLayoutY(300);                        
+                        studentIdLabel.setLayoutX(182.5);
+                        studentIdLabel.setLayoutY(375);     
+                        studentIdSubLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+                        studentIdSubLabel.setLayoutX(182.5);
+                        studentIdSubLabel.setLayoutY(395);   
 
                         //Text Areas & Combo Boxes
-                        TextArea studentNameArea = new TextArea();
+                        TextArea studentFirstNameArea = new TextArea();
+                        TextArea studentSecondNameArea = new TextArea();
                         TextArea studentIdArea = new TextArea();
-                        studentNameArea.setEditable(true);
-                        studentNameArea.setPrefSize(140, 40);
-                        studentNameArea.setLayoutX(90);
-                        studentNameArea.setLayoutY(325);
+                        studentFirstNameArea.setEditable(true);
+                        studentFirstNameArea.setPrefSize(140, 40);
+                        studentFirstNameArea.setLayoutX(70);
+                        studentFirstNameArea.setLayoutY(325);
+                        studentSecondNameArea.setEditable(true);
+                        studentSecondNameArea.setPrefSize(140, 40);
+                        studentSecondNameArea.setLayoutX(262.5);
+                        studentSecondNameArea.setLayoutY(325);
                         studentIdArea.setEditable(true);
                         studentIdArea.setPrefSize(140, 40);
-                        studentIdArea.setLayoutX(242.5);
-                        studentIdArea.setLayoutY(325);
+                        studentIdArea.setLayoutX(160);
+                        studentIdArea.setLayoutY(417.5);
 
                         //Table label
                         Label tableLabel = new Label("Students:");
@@ -1460,14 +1482,17 @@ public class AccommodationApplication extends Application {
                                 errorText.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
 
                                 //Get new data to be added 
-                                String newStudentName = studentNameArea.getText();
+                                String newStudentFirstName = studentFirstNameArea.getText();                                
+                                String newStudentSecondName = studentSecondNameArea.getText();
                                 String newStudentId = studentIdArea.getText();
 
                                 //Check if text entries are empty                              
-                                if ((newStudentName != null && !newStudentName.isEmpty())
+                                if ((newStudentFirstName != null && !newStudentFirstName.isEmpty())
+                                        && (newStudentSecondName != null && !newStudentSecondName.isEmpty())
                                         && (newStudentId != null && !newStudentId.isEmpty())) {
                                     //Check if text entries contain commas
-                                    if (newStudentName.contains(",")
+                                    if (newStudentFirstName.contains(",")
+                                            || newStudentSecondName.contains(",")
                                             || newStudentId.contains(",")) {
                                         errorText.setText("Data cannot contain commas.");
                                         errorText.setTextAlignment(TextAlignment.CENTER);
@@ -1494,8 +1519,21 @@ public class AccommodationApplication extends Application {
                                                     break;
                                                 }
                                             }
-                                            if (studentIdExists != true) {
-                                                //Add new data                                                
+                                            //Check if student ID in range
+                                            if (newStudentIdInt < 1
+                                                    || newStudentIdInt > 999999) {
+                                                errorText.setText("Student ID must be\nbetween 1 - 999,999.");
+                                                errorText.setTextAlignment(TextAlignment.CENTER);
+                                                dialogVbox.getChildren().add(errorText);
+                                                dialogVbox.setAlignment(Pos.CENTER);
+                                                errorDialog.show();
+                                            } else if (studentIdExists == false) {
+                                                //Add new data       
+                                                String newStudentName = (
+                                                        newStudentFirstName
+                                                        + " "
+                                                        + newStudentSecondName
+                                                        );
                                                 studentList.add(new Student(newStudentName,
                                                         newStudentIdInt
                                                 ));
@@ -1504,7 +1542,7 @@ public class AccommodationApplication extends Application {
                                                 addStudentBtn.fire();
                                             }
                                         } catch (NumberFormatException eNum) {
-                                            errorText.setText("Student ID must be\na whole number.");
+                                            errorText.setText("Student ID must be\na valid number.");
                                             errorText.setTextAlignment(TextAlignment.CENTER);
                                             dialogVbox.getChildren().add(errorText);
                                             dialogVbox.setAlignment(Pos.CENTER);
@@ -1550,10 +1588,13 @@ public class AccommodationApplication extends Application {
                         root.getChildren().add(tableVbox);
                         root.getChildren().add(addBtn);
                         root.getChildren().add(backBtn);
-                        root.getChildren().addAll(studentNameLabel,
-                                        studentIdLabel
+                        root.getChildren().addAll(studentFirstNameLabel,
+                                        studentSecondNameLabel,
+                                        studentIdLabel,
+                                        studentIdSubLabel
                                 );
-                        root.getChildren().addAll(studentNameArea,
+                        root.getChildren().addAll(studentFirstNameArea,
+                                        studentSecondNameArea,
                                         studentIdArea
                                 );
 
@@ -1643,6 +1684,7 @@ public class AccommodationApplication extends Application {
         //Get HALLS data
         try {
             br = new BufferedReader(new FileReader(hallsFile));
+            br.readLine();//Skips header line
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
                 int hallID = Integer.parseInt(data[1]);
@@ -1657,6 +1699,7 @@ public class AccommodationApplication extends Application {
         //Get ROOMS data
         try {
             br = new BufferedReader(new FileReader(roomsFile));
+            br.readLine();//Skips header line
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
                 int roomNumber = Integer.parseInt(data[0]);
@@ -1673,6 +1716,7 @@ public class AccommodationApplication extends Application {
         //Get STUDENTS data
         try {
             br = new BufferedReader(new FileReader(studentsFile));
+            br.readLine();//Skips header line
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
                 int studentID = Integer.parseInt(data[1]);
@@ -1686,6 +1730,7 @@ public class AccommodationApplication extends Application {
         //Get LEASES data
         try {
             br = new BufferedReader(new FileReader(leasesFile));
+            br.readLine();//Skips header line
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
                 int leaseNumber = Integer.parseInt(data[0]);
@@ -1712,7 +1757,18 @@ public class AccommodationApplication extends Application {
         FileWriter studentWriter = new FileWriter(studentsFile);
         FileWriter leaseWriter = new FileWriter(leasesFile);
 
-        //Save HALLS data
+        //HALLS file headers
+        List<String> hallHeaders = new ArrayList<>();
+        hallHeaders.add("Hall Name");
+        hallHeaders.add("Hall ID");
+        hallHeaders.add("Address");
+        hallHeaders.add("Post Code");
+        hallHeaders.add("Phone Number");
+        String hallHeaderLine = hallHeaders.stream().collect(Collectors.joining(","));
+        hallWriter.write(hallHeaderLine);
+        hallWriter.write(System.getProperty("line.separator"));        
+        
+        //Save HALLS data       
         for (Halls hall : hallList) {
             //List of data to be saved
             List<String> hallData = new ArrayList<>();
@@ -1729,6 +1785,17 @@ public class AccommodationApplication extends Application {
         }
         hallWriter.close();
 
+        //ROOMS file headers
+        List<String> roomHeaders = new ArrayList<>();
+        roomHeaders.add("Room Number");
+        roomHeaders.add("Monthly Rent (£)");
+        roomHeaders.add("Hall ID");
+        roomHeaders.add("Clean Status");
+        roomHeaders.add("Occupancy");
+        String roomHeaderLine = roomHeaders.stream().collect(Collectors.joining(","));
+        roomWriter.write(roomHeaderLine);
+        roomWriter.write(System.getProperty("line.separator"));        
+        
         //Save ROOMS data
         for (Room room : roomList) {
             //List of data to be saved
@@ -1745,6 +1812,14 @@ public class AccommodationApplication extends Application {
             roomWriter.write(System.getProperty("line.separator"));
         }
         roomWriter.close();
+        
+        //STUDENTS file headers
+        List<String> studentHeaders = new ArrayList<>();
+        studentHeaders.add("Student Name");
+        studentHeaders.add("Student ID");
+        String studentHeaderLine = studentHeaders.stream().collect(Collectors.joining(","));
+        studentWriter.write(studentHeaderLine);
+        studentWriter.write(System.getProperty("line.separator"));        
 
         //Save STUDENTS data
         for (Student student : studentList) {
@@ -1759,6 +1834,17 @@ public class AccommodationApplication extends Application {
             studentWriter.write(System.getProperty("line.separator"));
         }
         studentWriter.close();
+        
+        //LEASES file headers
+        List<String> leaseHeaders = new ArrayList<>();
+        leaseHeaders.add("Lease Number");
+        leaseHeaders.add("Lease Duration (Months)");
+        leaseHeaders.add("Hall ID");
+        leaseHeaders.add("Room Number");
+        leaseHeaders.add("Student ID");
+        String leaseHeaderLine = leaseHeaders.stream().collect(Collectors.joining(","));
+        leaseWriter.write(leaseHeaderLine);
+        leaseWriter.write(System.getProperty("line.separator"));     
 
         //Save LEASES data
         for (Lease lease : leaseList) {
