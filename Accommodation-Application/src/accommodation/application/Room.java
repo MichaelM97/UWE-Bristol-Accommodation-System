@@ -5,9 +5,6 @@
  */
 package accommodation.application;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author Michael McCormick (15012271)
@@ -52,12 +49,7 @@ public class Room {
         return occupancy;
     }
     
-    /* -Class Setters- */
-    
-    public void setMonthlyRent(double monthlyRent) {
-        this.monthlyRent = monthlyRent;
-    }
-    
+    /* -Class Setters- */    
     public void setCleanStatus(String cleanStatus){
         this.cleanStatus = cleanStatus;
     }
