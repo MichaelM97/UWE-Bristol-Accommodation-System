@@ -1375,32 +1375,206 @@ public class AccommodationApplication extends Application {
                  * * ADD STUDENT Handling **
                  */
                 Button addStudentBtn = new Button();
-
-                addStudentBtn.setText(
-                        "Add New\nStudent");
-                addStudentBtn.setPrefSize(
-                        175, 80);
-                addStudentBtn.setStyle(
-                        "-fx-font-size: 2em; ");
-                addStudentBtn.setLayoutX(
-                        325);
-                addStudentBtn.setLayoutY(
-                        175);
+                addStudentBtn.setText("Add New\nStudent");
+                addStudentBtn.setPrefSize(175, 80);
+                addStudentBtn.setStyle("-fx-font-size: 2em; ");
+                addStudentBtn.setLayoutX(325);
+                addStudentBtn.setLayoutY(175);
                 addStudentBtn.setTextAlignment(TextAlignment.CENTER);
+                addStudentBtn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        allStage.close();
+                        Stage addStudentStage = new Stage();
+
+                        //Create an observable list for hall data
+                        ObservableList<Student> observableStudentList
+                                = FXCollections.observableArrayList(studentList);
+
+                        //Text Area Labels
+                        Label studentNameLabel = new Label("Student Name");
+                        Label studentIdLabel = new Label("Student ID");
+                        studentNameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                        studentNameLabel.setLayoutX(100);
+                        studentNameLabel.setLayoutY(300);
+                        studentIdLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                        studentIdLabel.setLayoutX(265);
+                        studentIdLabel.setLayoutY(300);                        
+
+                        //Text Areas & Combo Boxes
+                        TextArea studentNameArea = new TextArea();
+                        TextArea studentIdArea = new TextArea();
+                        studentNameArea.setEditable(true);
+                        studentNameArea.setPrefSize(140, 40);
+                        studentNameArea.setLayoutX(90);
+                        studentNameArea.setLayoutY(325);
+                        studentIdArea.setEditable(true);
+                        studentIdArea.setPrefSize(140, 40);
+                        studentIdArea.setLayoutX(242.5);
+                        studentIdArea.setLayoutY(325);
+
+                        //Table label
+                        Label tableLabel = new Label("Students:");
+                        tableLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+
+                        //Create table columns and set fill data
+                        TableView table = new TableView();
+                        table.setEditable(true);
+                        TableColumn studentNameCol = new TableColumn("Student Name");
+                        studentNameCol.setCellValueFactory(
+                                new PropertyValueFactory<Student, String>("studentName"));
+                        TableColumn studentIdCol = new TableColumn("Student ID");
+                        studentIdCol.setCellValueFactory(
+                                new PropertyValueFactory<Student, String>("studentID"));                        
+                        table.setItems(observableStudentList);
+                        table.getColumns().addAll(studentNameCol, studentIdCol);
+
+                        //Form table                
+                        VBox tableVbox = new VBox();
+                        tableVbox.setSpacing(5);
+                        tableVbox.getChildren().addAll(tableLabel, table);
+                        tableVbox.setLayoutX(20);
+                        tableVbox.setLayoutY(20);
+                        tableVbox.setPrefSize(430, 250);
+
+                        //Add button
+                        Button addBtn = new Button();
+                        addBtn.setText("Add");
+                        addBtn.setPrefSize(100, 30);
+                        addBtn.setStyle("-fx-font-size: 1em; ");
+                        addBtn.setLayoutX(365);
+                        addBtn.setLayoutY(445);
+                        //Change data in Table & relevant classes when button pressed                           
+                        addBtn.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent e) {
+                                //Create popup used for error display
+                                Stage errorDialog = new Stage();
+                                errorDialog.initModality(Modality.APPLICATION_MODAL);
+                                errorDialog.initOwner(primaryStage);
+                                errorDialog.setTitle("ERROR");
+                                VBox dialogVbox = new VBox(20);
+                                Scene dialogScene = new Scene(dialogVbox, 300, 50);
+                                errorDialog.setScene(dialogScene);
+                                Text errorText = new Text();
+                                errorText.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
+
+                                //Get new data to be added 
+                                String newStudentName = studentNameArea.getText();
+                                String newStudentId = studentIdArea.getText();
+
+                                //Check if text entries are empty                              
+                                if ((newStudentName != null && !newStudentName.isEmpty())
+                                        && (newStudentId != null && !newStudentId.isEmpty())) {
+                                    //Check if text entries contain commas
+                                    if (newStudentName.contains(",")
+                                            || newStudentId.contains(",")) {
+                                        errorText.setText("Data cannot contain commas.");
+                                        errorText.setTextAlignment(TextAlignment.CENTER);
+                                        dialogVbox.getChildren().add(errorText);
+                                        dialogVbox.setAlignment(Pos.CENTER);
+                                        errorDialog.show();
+                                    } else {
+                                        boolean studentIdExists = false;
+                                        try {
+                                            //Check int's/double valid                                            
+                                            int newStudentIdInt = Integer.parseInt(
+                                                    newStudentId);
+                                            
+                                            //Check if student ID is in use                                            
+                                            for (Student student : studentList) {
+                                                if (student.getStudentID()
+                                                        == newStudentIdInt) {
+                                                    studentIdExists = true;
+                                                    errorText.setText("Student ID already\nin use.");
+                                                    errorText.setTextAlignment(TextAlignment.CENTER);
+                                                    dialogVbox.getChildren().add(errorText);
+                                                    dialogVbox.setAlignment(Pos.CENTER);
+                                                    errorDialog.show();
+                                                    break;
+                                                }
+                                            }
+                                            if (studentIdExists != true) {
+                                                //Add new data                                                
+                                                studentList.add(new Student(newStudentName,
+                                                        newStudentIdInt
+                                                ));
+                                                saveFileData();
+                                                addStudentStage.close();
+                                                addStudentBtn.fire();
+                                            }
+                                        } catch (NumberFormatException eNum) {
+                                            errorText.setText("Student ID must be\na whole number.");
+                                            errorText.setTextAlignment(TextAlignment.CENTER);
+                                            dialogVbox.getChildren().add(errorText);
+                                            dialogVbox.setAlignment(Pos.CENTER);
+                                            errorDialog.show();
+                                        } catch (IOException ex) {
+                                            Logger.getLogger(AccommodationApplication.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                    }
+                                } else {
+                                    errorText.setText("All fields must contain\ndata.");
+                                    errorText.setTextAlignment(TextAlignment.CENTER);
+                                    dialogVbox.getChildren().add(errorText);
+                                    dialogVbox.setAlignment(Pos.CENTER);
+                                    errorDialog.show();
+                                }
+                            }
+                        }
+                        );
+
+                        //Back button
+                        Button backBtn = new Button();
+
+                        backBtn.setText("Back");
+                        backBtn.setPrefSize(100, 30);
+                        backBtn.setStyle("-fx-font-size: 1em; ");
+                        backBtn.setLayoutX(5);
+                        backBtn.setLayoutY(445);
+                        //Back button handling
+                        backBtn.setOnAction(
+                                new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event
+                            ) {
+                                addStudentStage.close();
+                                allStage.show();
+                            }
+                        }
+                        );
+
+                        //Create pane and add objects depending on scene
+                        Pane root = new Pane();
+
+                        root.getChildren().add(tableVbox);
+                        root.getChildren().add(addBtn);
+                        root.getChildren().add(backBtn);
+                        root.getChildren().addAll(studentNameLabel,
+                                        studentIdLabel
+                                );
+                        root.getChildren().addAll(studentNameArea,
+                                        studentIdArea
+                                );
+
+                        //Set scene dimensions and title
+                        Scene scene = new Scene(root, 470, 480);
+                        addStudentStage.setTitle("Add Student - Accommodation System");
+
+                        //Set scene to stage and show
+                        addStudentStage.setScene(scene);
+                        addStudentStage.show();
+                    }
+                }
+                );
 
                 //Back button
                 Button backBtn = new Button();
-
-                backBtn.setText(
-                        "Back");
-                backBtn.setPrefSize(
-                        100, 30);
-                backBtn.setStyle(
-                        "-fx-font-size: 1em; ");
-                backBtn.setLayoutX(
-                        5);
-                backBtn.setLayoutY(
-                        315);
+                backBtn.setText("Back");
+                backBtn.setPrefSize(100, 30);
+                backBtn.setStyle("-fx-font-size: 1em; ");
+                backBtn.setLayoutX(5);
+                backBtn.setLayoutY(315);
                 //Back button handling
                 backBtn.setOnAction(
                         new EventHandler<ActionEvent>() {
@@ -1415,24 +1589,18 @@ public class AccommodationApplication extends Application {
 
                 //Create pane and add objects depending on scene
                 Pane root = new Pane();
-
-                root.getChildren()
-                        .addAll(addHallBtn,
+                root.getChildren().addAll(addHallBtn,
                                 addRoomBtn,
                                 addStudentBtn,
                                 backBtn);
 
                 //Set scene dimensions and title
                 Scene scene = new Scene(root, 600, 350);
-
-                allStage.setTitle(
-                        "All View - Accommodation System");
+                allStage.setTitle("All View - Accommodation System");
 
                 //Set scene to stage and show
                 allStage.setScene(scene);
-
                 allStage.show();
-
             }
         }
         );
