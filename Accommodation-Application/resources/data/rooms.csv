@@ -1,6 +1,6 @@
-101,250.0,1,Clean,Occupied
-102,250.0,1,Clean,Unoccupied
-103,250.0,1,Offline,Unoccupied
+101,250,1,Clean,Occupied
+102,250,1,Clean,Unoccupied
+103,250,1,Offline,Unoccupied
 101,399.99,2,Offline,Unoccupied
 102,399.99,2,Dirty,Occupied
 103,399.99,2,Offline,Unoccupied
