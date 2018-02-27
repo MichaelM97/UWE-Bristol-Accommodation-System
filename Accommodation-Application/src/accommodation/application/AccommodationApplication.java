@@ -831,13 +831,295 @@ public class AccommodationApplication extends Application {
             @Override
             public void handle(ActionEvent event
             ) {
+                //Switch stage
+                primaryStage.close();
+                Stage allStage = new Stage();
+
+                /**
+                * * ADD HALL Handling **
+                */
+                Button addHallBtn = new Button();
+                addHallBtn.setText("Add New Hall");
+                addHallBtn.setPrefSize(175, 40);
+                addHallBtn.setStyle("-fx-font-size: 2em; ");
+                addHallBtn.setLayoutX(100);
+                addHallBtn.setLayoutY(100);
+                //Add Hall handling
+                addHallBtn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        allStage.close();
+                        Stage addHallStage = new Stage();
+
+                        //Create an observable list for hall data
+                        ObservableList<Halls> observableHallList
+                                = FXCollections.observableArrayList(hallList);
+
+                        //Text Area Labels
+                        Label hallNameLabel = new Label("Hall Name");
+                        Label hallIdLabel = new Label("Hall ID");
+                        Label phoneNumberLabel = new Label("Phone Number");
+                        Label addressLabel = new Label("Address");
+                        Label postCodeLabel = new Label("Post Code");
+                        hallNameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                        hallNameLabel.setLayoutX(40);
+                        hallNameLabel.setLayoutY(285);
+                        hallIdLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                        hallIdLabel.setLayoutX(202.5);
+                        hallIdLabel.setLayoutY(285);
+                        phoneNumberLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                        phoneNumberLabel.setLayoutX(322.5);
+                        phoneNumberLabel.setLayoutY(285);
+                        addressLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                        addressLabel.setLayoutX(125);
+                        addressLabel.setLayoutY(355);
+                        postCodeLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                        postCodeLabel.setLayoutX(270);
+                        postCodeLabel.setLayoutY(355);
+
+                        //Text Areas & Combo Boxes
+                        TextArea hallNameArea = new TextArea();
+                        TextArea hallIdArea = new TextArea();
+                        TextArea phoneNumberArea = new TextArea();
+                        TextArea addressArea = new TextArea();
+                        TextArea postCodeArea = new TextArea();
+                        hallNameArea.setEditable(true);
+                        hallNameArea.setPrefSize(140, 40);
+                        hallNameArea.setLayoutX(15);
+                        hallNameArea.setLayoutY(310);
+                        hallIdArea.setEditable(true);
+                        hallIdArea.setPrefSize(140, 40);
+                        hallIdArea.setLayoutX(165);
+                        hallIdArea.setLayoutY(310);
+                        phoneNumberArea.setEditable(true);
+                        phoneNumberArea.setPrefSize(140, 40);
+                        phoneNumberArea.setLayoutX(315);
+                        phoneNumberArea.setLayoutY(310);
+                        addressArea.setEditable(true);
+                        addressArea.setPrefSize(140, 40);
+                        addressArea.setLayoutX(90);
+                        addressArea.setLayoutY(380);
+                        postCodeArea.setEditable(true);
+                        postCodeArea.setPrefSize(140, 40);
+                        postCodeArea.setLayoutX(242.5);
+                        postCodeArea.setLayoutY(380);
+
+                        //Table label
+                        Label tableLabel = new Label("Halls:");
+                        tableLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+
+                        //Create table columns and set fill data
+                        TableView table = new TableView();
+                        table.setEditable(true);
+                        TableColumn hallNameCol = new TableColumn("Hall Name");
+                        hallNameCol.setCellValueFactory(
+                                new PropertyValueFactory<Halls, String>("hallName"));
+                        TableColumn hallIdCol = new TableColumn("Hall ID");
+                        hallIdCol.setCellValueFactory(
+                                new PropertyValueFactory<Halls, Integer>("hallID"));
+                        TableColumn addressCol = new TableColumn("Address");
+                        addressCol.setCellValueFactory(
+                                new PropertyValueFactory<Halls, String>("hallAddress"));
+                        TableColumn postCodeCol = new TableColumn("Post Code");
+                        postCodeCol.setCellValueFactory(
+                                new PropertyValueFactory<Halls, String>("hallPostCode"));
+                        TableColumn phoneNumberCol = new TableColumn("Phone Number");
+                        phoneNumberCol.setCellValueFactory(
+                                new PropertyValueFactory<Halls, String>("phoneNumber"));
+                        table.setItems(observableHallList);
+                        table.getColumns().addAll(hallNameCol, hallIdCol,
+                                addressCol, postCodeCol, phoneNumberCol);
+
+                        //Form table                
+                        VBox tableVbox = new VBox();
+                        tableVbox.setSpacing(5);
+                        tableVbox.getChildren().addAll(tableLabel, table);
+                        tableVbox.setLayoutX(20);
+                        tableVbox.setLayoutY(20);
+                        tableVbox.setPrefSize(430, 250);
+
+                        //Add button
+                        Button addBtn = new Button();
+                        addBtn.setText("Add");
+                        addBtn.setPrefSize(100, 30);
+                        addBtn.setStyle("-fx-font-size: 1em; ");
+                        addBtn.setLayoutX(365);
+                        addBtn.setLayoutY(445);
+                        //Change data in Table & relevant classes when button pressed                 
+                        addBtn.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent e) {
+                                //Create popup used for error display
+                                Stage errorDialog = new Stage();
+                                errorDialog.initModality(Modality.APPLICATION_MODAL);
+                                errorDialog.initOwner(primaryStage);
+                                errorDialog.setTitle("ERROR");
+                                VBox dialogVbox = new VBox(20);
+                                Scene dialogScene = new Scene(dialogVbox, 300, 50);
+                                errorDialog.setScene(dialogScene);
+                                Text errorText = new Text();
+                                errorText.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
+
+                                //Get new data to be added 
+                                String newHallName = hallNameArea.getText();
+                                String newHallId = hallIdArea.getText();
+                                String newPhoneNum = phoneNumberArea.getText();
+                                String newAddress = addressArea.getText();
+                                String newPostCode = postCodeArea.getText();
+
+                                //Check if text entries are empty                              
+                                if ((newHallName != null && !newHallName.isEmpty())
+                                        && (newHallId != null && !newHallId.isEmpty())
+                                        && (newPhoneNum != null && !newPhoneNum.isEmpty())
+                                        && (newAddress != null && !newAddress.isEmpty())
+                                        && (newPostCode != null && !newPostCode.isEmpty())) {
+                                    //Check if text entries contain commas
+                                    if (newHallName.contains(",")
+                                            || newHallId.contains(",")
+                                            || newPhoneNum.contains(",")
+                                            || newAddress.contains(",")
+                                            || newPostCode.contains(",")) {
+                                        errorText.setText("Data cannot contain commas.");
+                                        errorText.setTextAlignment(TextAlignment.CENTER);
+                                        dialogVbox.getChildren().add(errorText);
+                                        dialogVbox.setAlignment(Pos.CENTER);
+                                        errorDialog.show();
+                                    } else {
+                                        try {
+                                            //Check if hall name/ID in use
+                                            int newHallIdInt = Integer.parseInt(
+                                                    newHallId);
+                                            boolean alreadyExists = false;
+                                            for (Halls hall : hallList) {
+                                                if (hall.getHallName().equals(newHallName)) {
+                                                    errorText.setText("Hall name already\nin use.");
+                                                    errorText.setTextAlignment(TextAlignment.CENTER);
+                                                    dialogVbox.getChildren().add(errorText);
+                                                    dialogVbox.setAlignment(Pos.CENTER);
+                                                    errorDialog.show();
+                                                    alreadyExists = true;
+                                                    break;
+                                                } else if (hall.getHallID() == newHallIdInt) {
+                                                    errorText.setText("Hall ID already\nin use.");
+                                                    errorText.setTextAlignment(TextAlignment.CENTER);
+                                                    dialogVbox.getChildren().add(errorText);
+                                                    dialogVbox.setAlignment(Pos.CENTER);
+                                                    errorDialog.show();
+                                                    alreadyExists = true;
+                                                    break;
+                                                }
+                                            }                                            
+                                            //Add new data
+                                            if (alreadyExists == false) {
+                                                hallList.add(new Halls(newHallName,
+                                                        newHallIdInt,
+                                                        newAddress,
+                                                        newPostCode,
+                                                        newPhoneNum
+                                                ));
+                                                saveFileData();
+                                                addHallStage.close();
+                                                addHallBtn.fire();
+                                            }                                            
+                                            //Check if new hall ID is valid int
+                                        } catch (NumberFormatException eNum) {
+                                            errorText.setText("Hall ID must be a\nwhole number.");
+                                            errorText.setTextAlignment(TextAlignment.CENTER);
+                                            dialogVbox.getChildren().add(errorText);
+                                            dialogVbox.setAlignment(Pos.CENTER);
+                                            errorDialog.show();
+                                        } catch (IOException ex) {
+                                            Logger.getLogger(AccommodationApplication.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                    }
+                                } else {
+                                    errorText.setText("All fields must contain\ndata.");
+                                    errorText.setTextAlignment(TextAlignment.CENTER);
+                                    dialogVbox.getChildren().add(errorText);
+                                    dialogVbox.setAlignment(Pos.CENTER);
+                                    errorDialog.show();
+                                }
+                            }
+                        });
+
+                        //Back button
+                        Button backBtn = new Button();
+                        backBtn.setText("Back");
+                        backBtn.setPrefSize(100, 30);
+                        backBtn.setStyle("-fx-font-size: 1em; ");
+                        backBtn.setLayoutX(5);
+                        backBtn.setLayoutY(445);
+                        //Back button handling
+                        backBtn.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                addHallStage.close();
+                                allStage.show();
+                            }
+                        });
+
+                        //Create pane and add objects depending on scene
+                        Pane root = new Pane();
+                        root.getChildren().add(tableVbox);
+                        root.getChildren().add(addBtn);
+                        root.getChildren().add(backBtn);
+                        root.getChildren().addAll(hallNameLabel,
+                                hallIdLabel,
+                                phoneNumberLabel,
+                                addressLabel,
+                                postCodeLabel
+                        );
+                        root.getChildren().addAll(hallNameArea,
+                                hallIdArea,
+                                phoneNumberArea,
+                                addressArea,
+                                postCodeArea
+                        );
+
+                        //Set scene dimensions and title
+                        Scene scene = new Scene(root, 470, 480);
+                        addHallStage.setTitle("Add Hall - Accommodation System");
+
+                        //Set scene to stage and show
+                        addHallStage.setScene(scene);
+                        addHallStage.show();
+                    }
+                });
+
+                //Back button
+                Button backBtn = new Button();
+                backBtn.setText("Back");
+                backBtn.setPrefSize(100, 30);
+                backBtn.setStyle("-fx-font-size: 1em; ");
+                backBtn.setLayoutX(5);
+                backBtn.setLayoutY(315);
+                //Back button handling
+                backBtn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        allStage.close();
+                        primaryStage.show();
+                    }
+                });
+
+                //Create pane and add objects depending on scene
+                Pane root = new Pane();
+                root.getChildren().add(addHallBtn);
+                root.getChildren().add(backBtn);
+
+                //Set scene dimensions and title
+                Scene scene = new Scene(root, 600, 350);
+                allStage.setTitle("All View - Accommodation System");
+
+                //Set scene to stage and show
+                allStage.setScene(scene);
+                allStage.show();
 
             }
         });
 
         //Create pane and add objects depending on scene
         Pane root = new Pane();
-
         root.getChildren()
                 .add(managerBtn);
         root.getChildren()
