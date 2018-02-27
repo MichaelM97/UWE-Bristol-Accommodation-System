@@ -1002,8 +1002,15 @@ public class AccommodationApplication extends Application {
                                                     break;
                                                 }
                                             }
+                                            if (newHallIdInt < 1
+                                                    || newHallIdInt > 999999) {
+                                                errorText.setText("Hall ID must be\nbetween 1 - 999,999.");
+                                                errorText.setTextAlignment(TextAlignment.CENTER);
+                                                dialogVbox.getChildren().add(errorText);
+                                                dialogVbox.setAlignment(Pos.CENTER);
+                                                errorDialog.show();                                            
                                             //Add new data
-                                            if (alreadyExists == false) {
+                                            } else if (alreadyExists == false) {
                                                 hallList.add(new Halls(newHallName,
                                                         newHallIdInt,
                                                         newAddress,
@@ -1267,8 +1274,16 @@ public class AccommodationApplication extends Application {
                                                         roomExists = true;
                                                         break;
                                                     }
+                                                    //Check if room number is in range
+                                                    if (newRoomNumInt < 1
+                                                            || newRoomNumInt > 999999) {
+                                                        errorText.setText("Room number must be\nbetween 1 - 999,999.");
+                                                        errorText.setTextAlignment(TextAlignment.CENTER);
+                                                        dialogVbox.getChildren().add(errorText);
+                                                        dialogVbox.setAlignment(Pos.CENTER);
+                                                        errorDialog.show();                                                    
                                                     //Add new data
-                                                    if (roomExists == false) {
+                                                    } else if (roomExists == false) {
                                                         roomList.add(new Room(newRoomNumInt,
                                                                 newMonthlyRentDouble,
                                                                 newHallIdInt,
@@ -1290,11 +1305,11 @@ public class AccommodationApplication extends Application {
                                             }
                                         } catch (NumberFormatException eNum) {
                                             if (validRoomNum == true) {
-                                                errorText.setText("Room number must be\na whole number.");
+                                                errorText.setText("Room number must be\na valid number.");
                                             } else if (validRent == true) {
-                                                errorText.setText("Monthly Rent must be\na decimal number.");
+                                                errorText.setText("Monthly Rent must b a\nvalid decimal number.");
                                             } else {
-                                                errorText.setText("Hall ID must be\na whole number.");
+                                                errorText.setText("Hall ID must be\na valid number.");
                                             }
                                             errorText.setTextAlignment(TextAlignment.CENTER);
                                             dialogVbox.getChildren().add(errorText);
@@ -1389,6 +1404,7 @@ public class AccommodationApplication extends Application {
                         Label studentFirstNameLabel = new Label("Student First Name");
                         Label studentSecondNameLabel = new Label("Student Second Name");
                         Label studentIdLabel = new Label("Student ID");
+                        Label studentIdSubLabel = new Label("(1 - 999,999)");
                         studentFirstNameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
                         studentFirstNameLabel.setLayoutX(60);
                         studentFirstNameLabel.setLayoutY(300);
@@ -1397,7 +1413,10 @@ public class AccommodationApplication extends Application {
                         studentSecondNameLabel.setLayoutY(300);
                         studentIdLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
                         studentIdLabel.setLayoutX(182.5);
-                        studentIdLabel.setLayoutY(375);                        
+                        studentIdLabel.setLayoutY(375);     
+                        studentIdSubLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+                        studentIdSubLabel.setLayoutX(182.5);
+                        studentIdSubLabel.setLayoutY(395);   
 
                         //Text Areas & Combo Boxes
                         TextArea studentFirstNameArea = new TextArea();
@@ -1413,8 +1432,8 @@ public class AccommodationApplication extends Application {
                         studentSecondNameArea.setLayoutY(325);
                         studentIdArea.setEditable(true);
                         studentIdArea.setPrefSize(140, 40);
-                        studentIdArea.setLayoutX(165);
-                        studentIdArea.setLayoutY(400);
+                        studentIdArea.setLayoutX(160);
+                        studentIdArea.setLayoutY(417.5);
 
                         //Table label
                         Label tableLabel = new Label("Students:");
@@ -1500,7 +1519,15 @@ public class AccommodationApplication extends Application {
                                                     break;
                                                 }
                                             }
-                                            if (studentIdExists != true) {
+                                            //Check if student ID in range
+                                            if (newStudentIdInt < 1
+                                                    || newStudentIdInt > 999999) {
+                                                errorText.setText("Student ID must be\nbetween 1 - 999,999.");
+                                                errorText.setTextAlignment(TextAlignment.CENTER);
+                                                dialogVbox.getChildren().add(errorText);
+                                                dialogVbox.setAlignment(Pos.CENTER);
+                                                errorDialog.show();
+                                            } else if (studentIdExists == false) {
                                                 //Add new data       
                                                 String newStudentName = (
                                                         newStudentFirstName
@@ -1515,7 +1542,7 @@ public class AccommodationApplication extends Application {
                                                 addStudentBtn.fire();
                                             }
                                         } catch (NumberFormatException eNum) {
-                                            errorText.setText("Student ID must be\na whole number.");
+                                            errorText.setText("Student ID must be\na valid number.");
                                             errorText.setTextAlignment(TextAlignment.CENTER);
                                             dialogVbox.getChildren().add(errorText);
                                             dialogVbox.setAlignment(Pos.CENTER);
@@ -1563,7 +1590,8 @@ public class AccommodationApplication extends Application {
                         root.getChildren().add(backBtn);
                         root.getChildren().addAll(studentFirstNameLabel,
                                         studentSecondNameLabel,
-                                        studentIdLabel
+                                        studentIdLabel,
+                                        studentIdSubLabel
                                 );
                         root.getChildren().addAll(studentFirstNameArea,
                                         studentSecondNameArea,
