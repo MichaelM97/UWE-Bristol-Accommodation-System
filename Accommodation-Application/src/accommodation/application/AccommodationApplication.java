@@ -1386,26 +1386,35 @@ public class AccommodationApplication extends Application {
                                 = FXCollections.observableArrayList(studentList);
 
                         //Text Area Labels
-                        Label studentNameLabel = new Label("Student Name");
+                        Label studentFirstNameLabel = new Label("Student First Name");
+                        Label studentSecondNameLabel = new Label("Student Second Name");
                         Label studentIdLabel = new Label("Student ID");
-                        studentNameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-                        studentNameLabel.setLayoutX(100);
-                        studentNameLabel.setLayoutY(300);
+                        studentFirstNameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                        studentFirstNameLabel.setLayoutX(60);
+                        studentFirstNameLabel.setLayoutY(300);
+                        studentSecondNameLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                        studentSecondNameLabel.setLayoutX(242.5);
+                        studentSecondNameLabel.setLayoutY(300);
                         studentIdLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-                        studentIdLabel.setLayoutX(265);
-                        studentIdLabel.setLayoutY(300);                        
+                        studentIdLabel.setLayoutX(182.5);
+                        studentIdLabel.setLayoutY(375);                        
 
                         //Text Areas & Combo Boxes
-                        TextArea studentNameArea = new TextArea();
+                        TextArea studentFirstNameArea = new TextArea();
+                        TextArea studentSecondNameArea = new TextArea();
                         TextArea studentIdArea = new TextArea();
-                        studentNameArea.setEditable(true);
-                        studentNameArea.setPrefSize(140, 40);
-                        studentNameArea.setLayoutX(90);
-                        studentNameArea.setLayoutY(325);
+                        studentFirstNameArea.setEditable(true);
+                        studentFirstNameArea.setPrefSize(140, 40);
+                        studentFirstNameArea.setLayoutX(70);
+                        studentFirstNameArea.setLayoutY(325);
+                        studentSecondNameArea.setEditable(true);
+                        studentSecondNameArea.setPrefSize(140, 40);
+                        studentSecondNameArea.setLayoutX(262.5);
+                        studentSecondNameArea.setLayoutY(325);
                         studentIdArea.setEditable(true);
                         studentIdArea.setPrefSize(140, 40);
-                        studentIdArea.setLayoutX(242.5);
-                        studentIdArea.setLayoutY(325);
+                        studentIdArea.setLayoutX(165);
+                        studentIdArea.setLayoutY(400);
 
                         //Table label
                         Label tableLabel = new Label("Students:");
@@ -1454,14 +1463,17 @@ public class AccommodationApplication extends Application {
                                 errorText.setFont(Font.font("Verdana", FontWeight.BOLD, 13));
 
                                 //Get new data to be added 
-                                String newStudentName = studentNameArea.getText();
+                                String newStudentFirstName = studentFirstNameArea.getText();                                
+                                String newStudentSecondName = studentSecondNameArea.getText();
                                 String newStudentId = studentIdArea.getText();
 
                                 //Check if text entries are empty                              
-                                if ((newStudentName != null && !newStudentName.isEmpty())
+                                if ((newStudentFirstName != null && !newStudentFirstName.isEmpty())
+                                        && (newStudentSecondName != null && !newStudentSecondName.isEmpty())
                                         && (newStudentId != null && !newStudentId.isEmpty())) {
                                     //Check if text entries contain commas
-                                    if (newStudentName.contains(",")
+                                    if (newStudentFirstName.contains(",")
+                                            || newStudentSecondName.contains(",")
                                             || newStudentId.contains(",")) {
                                         errorText.setText("Data cannot contain commas.");
                                         errorText.setTextAlignment(TextAlignment.CENTER);
@@ -1489,7 +1501,12 @@ public class AccommodationApplication extends Application {
                                                 }
                                             }
                                             if (studentIdExists != true) {
-                                                //Add new data                                                
+                                                //Add new data       
+                                                String newStudentName = (
+                                                        newStudentFirstName
+                                                        + " "
+                                                        + newStudentSecondName
+                                                        );
                                                 studentList.add(new Student(newStudentName,
                                                         newStudentIdInt
                                                 ));
@@ -1544,10 +1561,12 @@ public class AccommodationApplication extends Application {
                         root.getChildren().add(tableVbox);
                         root.getChildren().add(addBtn);
                         root.getChildren().add(backBtn);
-                        root.getChildren().addAll(studentNameLabel,
+                        root.getChildren().addAll(studentFirstNameLabel,
+                                        studentSecondNameLabel,
                                         studentIdLabel
                                 );
-                        root.getChildren().addAll(studentNameArea,
+                        root.getChildren().addAll(studentFirstNameArea,
+                                        studentSecondNameArea,
                                         studentIdArea
                                 );
 
