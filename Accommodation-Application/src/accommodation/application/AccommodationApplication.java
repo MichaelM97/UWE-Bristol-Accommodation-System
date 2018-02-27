@@ -1637,6 +1637,7 @@ public class AccommodationApplication extends Application {
         //Get HALLS data
         try {
             br = new BufferedReader(new FileReader(hallsFile));
+            br.readLine();//Skips header line
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
                 int hallID = Integer.parseInt(data[1]);
@@ -1651,6 +1652,7 @@ public class AccommodationApplication extends Application {
         //Get ROOMS data
         try {
             br = new BufferedReader(new FileReader(roomsFile));
+            br.readLine();//Skips header line
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
                 int roomNumber = Integer.parseInt(data[0]);
@@ -1667,6 +1669,7 @@ public class AccommodationApplication extends Application {
         //Get STUDENTS data
         try {
             br = new BufferedReader(new FileReader(studentsFile));
+            br.readLine();//Skips header line
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
                 int studentID = Integer.parseInt(data[1]);
@@ -1680,6 +1683,7 @@ public class AccommodationApplication extends Application {
         //Get LEASES data
         try {
             br = new BufferedReader(new FileReader(leasesFile));
+            br.readLine();//Skips header line
             while ((line = br.readLine()) != null) {
                 String[] data = line.split(cvsSplitBy);
                 int leaseNumber = Integer.parseInt(data[0]);
@@ -1706,7 +1710,18 @@ public class AccommodationApplication extends Application {
         FileWriter studentWriter = new FileWriter(studentsFile);
         FileWriter leaseWriter = new FileWriter(leasesFile);
 
-        //Save HALLS data
+        //HALLS file headers
+        List<String> hallHeaders = new ArrayList<>();
+        hallHeaders.add("Hall Name");
+        hallHeaders.add("Hall ID");
+        hallHeaders.add("Address");
+        hallHeaders.add("Post Code");
+        hallHeaders.add("Phone Number");
+        String hallHeaderLine = hallHeaders.stream().collect(Collectors.joining(","));
+        hallWriter.write(hallHeaderLine);
+        hallWriter.write(System.getProperty("line.separator"));        
+        
+        //Save HALLS data       
         for (Halls hall : hallList) {
             //List of data to be saved
             List<String> hallData = new ArrayList<>();
@@ -1723,6 +1738,17 @@ public class AccommodationApplication extends Application {
         }
         hallWriter.close();
 
+        //ROOMS file headers
+        List<String> roomHeaders = new ArrayList<>();
+        roomHeaders.add("Room Number");
+        roomHeaders.add("Monthly Rent (£)");
+        roomHeaders.add("Hall ID");
+        roomHeaders.add("Clean Status");
+        roomHeaders.add("Occupancy");
+        String roomHeaderLine = roomHeaders.stream().collect(Collectors.joining(","));
+        roomWriter.write(roomHeaderLine);
+        roomWriter.write(System.getProperty("line.separator"));        
+        
         //Save ROOMS data
         for (Room room : roomList) {
             //List of data to be saved
@@ -1739,6 +1765,14 @@ public class AccommodationApplication extends Application {
             roomWriter.write(System.getProperty("line.separator"));
         }
         roomWriter.close();
+        
+        //STUDENTS file headers
+        List<String> studentHeaders = new ArrayList<>();
+        studentHeaders.add("Student Name");
+        studentHeaders.add("Student ID");
+        String studentHeaderLine = studentHeaders.stream().collect(Collectors.joining(","));
+        studentWriter.write(studentHeaderLine);
+        studentWriter.write(System.getProperty("line.separator"));        
 
         //Save STUDENTS data
         for (Student student : studentList) {
@@ -1753,6 +1787,17 @@ public class AccommodationApplication extends Application {
             studentWriter.write(System.getProperty("line.separator"));
         }
         studentWriter.close();
+        
+        //LEASES file headers
+        List<String> leaseHeaders = new ArrayList<>();
+        leaseHeaders.add("Lease Number");
+        leaseHeaders.add("Lease Duration (Months)");
+        leaseHeaders.add("Hall ID");
+        leaseHeaders.add("Room Number");
+        leaseHeaders.add("Student ID");
+        String leaseHeaderLine = leaseHeaders.stream().collect(Collectors.joining(","));
+        leaseWriter.write(leaseHeaderLine);
+        leaseWriter.write(System.getProperty("line.separator"));     
 
         //Save LEASES data
         for (Lease lease : leaseList) {
