@@ -37,7 +37,7 @@ public class AccommodationApplicationTest {
         String[] args = null;
         AccommodationApplication.main(args);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        fail("Main method in AccomodationApplication class call failed!");
     }
 
     /**
@@ -50,7 +50,7 @@ public class AccommodationApplicationTest {
         AccommodationApplication instance = new AccommodationApplication();
         instance.start(primaryStage);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        fail("Start method in AccomodationApplication class call failed!");
     }
 
     /**
@@ -62,7 +62,7 @@ public class AccommodationApplicationTest {
         AccommodationApplication instance = new AccommodationApplication();
         instance.getFileData();
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        fail("GetFileData method in AccomodationApplication class call failed!");
     }
 
     /**
@@ -74,7 +74,7 @@ public class AccommodationApplicationTest {
         AccommodationApplication instance = new AccommodationApplication();
         instance.saveFileData();
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        fail("SaveFileData method in AccomodationApplication class call failed!");
     }
 
     /**
@@ -86,7 +86,7 @@ public class AccommodationApplicationTest {
         AccommodationApplication instance = new AccommodationApplication();
         instance.getTableData();
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        fail("GetTableData method in AccomodationApplication class call failed!");
     }
     
 }

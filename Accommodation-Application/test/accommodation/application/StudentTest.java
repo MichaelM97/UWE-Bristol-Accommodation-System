@@ -5,6 +5,7 @@
  */
 package accommodation.application;
 
+import java.lang.reflect.Field;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -31,28 +32,28 @@ public class StudentTest {
      * Test of getStudentName method, of class Student.
      */
     @Test
-    public void testGetStudentName() {
+    public void testGetStudentName() throws NoSuchFieldException, IllegalAccessException {
         System.out.println("getStudentName");
         Student instance = null;
-        String expResult = "";
-        String result = instance.getStudentName();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        final Field field = instance.getClass().getDeclaredField("studentName");
+        field.setAccessible(true);
+        field.set(instance, "John Smith");
+        final String result = instance.getStudentName();
+        assertEquals("Field wasn't retrieved properly", result, "John Smith");
     }
 
     /**
      * Test of getStudentID method, of class Student.
      */
     @Test
-    public void testGetStudentID() {
+    public void testGetStudentID() throws NoSuchFieldException, IllegalAccessException {
         System.out.println("getStudentID");
         Student instance = null;
-        int expResult = 0;
-        int result = instance.getStudentID();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        final Field field = instance.getClass().getDeclaredField("studentID");
+        field.setAccessible(true);
+        field.set(instance, 1);
+        final int result = instance.getStudentID();
+        assertEquals("Field wasn't retrieved properly", result, 1);
     }
     
 }
