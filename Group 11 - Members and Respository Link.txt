@@ -1,0 +1,11 @@
+Members:
+- Michael McCormick (15012271)
+- 
+Jacob Davies (15012401)
+- 
+Tin Wah Casey Cheung (16016792)
+- 
+Monika Pusz (16024757)
+
+Repository Link:
+https://gitlab.uwe.ac.uk/m2-mccormick/UWE-Bristol-Accommodation-System.git
